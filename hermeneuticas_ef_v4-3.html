@@ -1,0 +1,3070 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Batalla de las Hermenéuticas</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --lb:#0f9e6e;--lb2:#07c98a;--lb-d:#064d35;
+  --cg:#c47a0a;--cg2:#f5a623;--cg-d:#5a3800;
+  --pb:#4a3fbb;--pb2:#7c72e8;--pb-d:#1e1860;
+  --ms:#a83215;--ms2:#e05530;--ms-d:#4d1508;
+  --dark:#0d0d10;--dark2:#16161c;--dark3:#1e1e28;--dark4:#28283a;
+  --gold:#f5c842;--white:#f0ede8;--muted:#9898b0;
+  --success:#3B6D11;--success-l:#EAF3DE;
+  --danger:#791F1F;--danger-l:#FCEBEB;
+  --info:#1e1860;--info-l:#EEEDFE;
+}
+html,body{min-height:100vh;background:var(--dark);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(79,62,187,.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(168,50,21,.08) 0%,transparent 55%);pointer-events:none;z-index:0}
+.wrap{max-width:600px;margin:0 auto;padding:1.2rem 1rem 4rem;position:relative;z-index:1}
+.screen{display:none}.screen.active{display:block}
+.fd{font-family:'Bebas Neue',cursive;letter-spacing:.04em}
+.fs{font-family:'Crimson Pro',Georgia,serif}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:1.5rem 0 1.2rem}
+.hero-ey{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.hero-t{font-family:'Bebas Neue',cursive;font-size:46px;line-height:.95;color:var(--white)}
+.hero-t span{color:var(--gold)}
+.hero-s{font-family:'Crimson Pro',Georgia,serif;font-size:15px;color:var(--muted);font-style:italic;margin-top:8px}
+
+/* ── FIELD ── */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.inp{width:100%;padding:11px 14px;background:var(--dark3);border:1px solid var(--dark4);border-radius:10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s}
+.inp:focus{outline:none;border-color:var(--gold)}
+.inp::placeholder{color:var(--muted)}
+.sec{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:var(--dark4)}
+
+/* ── TABS ── */
+.tabs{display:flex;border:1px solid var(--dark4);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.tab{flex:1;padding:10px;font-size:13px;background:var(--dark3);color:var(--muted);border:none;cursor:pointer;transition:all .15s;border-right:1px solid var(--dark4)}
+.tab:last-child{border-right:none}
+.tab.on{background:var(--white);color:var(--dark);font-weight:700}
+
+/* ── CHAR GRID ── */
+.cg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.cc{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid var(--dark4);transition:all .18s;background:var(--dark3)}
+.cc:hover{transform:translateY(-2px)}
+.cc.lb.sel{border-color:var(--lb2);box-shadow:0 0 20px rgba(7,201,138,.22)}
+.cc.cg.sel{border-color:var(--cg2);box-shadow:0 0 20px rgba(245,166,35,.22)}
+.cc.pb.sel{border-color:var(--pb2);box-shadow:0 0 20px rgba(124,114,232,.22)}
+.cc.ms.sel{border-color:var(--ms2);box-shadow:0 0 20px rgba(224,85,48,.22)}
+.cc-band{height:4px}
+.lb .cc-band{background:linear-gradient(90deg,var(--lb),var(--lb2))}
+.cg .cc-band{background:linear-gradient(90deg,var(--cg),var(--cg2))}
+.pb .cc-band{background:linear-gradient(90deg,var(--pb),var(--pb2))}
+.ms .cc-band{background:linear-gradient(90deg,var(--ms),var(--ms2))}
+.cc-portrait{width:100%;height:140px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.lb .cc-portrait{background:#0a1a12}
+.cg .cc-portrait{background:#1a1008}
+.pb .cc-portrait{background:#080818}
+.ms .cc-portrait{background:#0d0518}
+.cc-svg{width:100%;height:140px;display:block;object-fit:cover}
+.cc-tag{position:absolute;top:7px;right:7px;font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:20px;color:var(--dark)}
+.lb .cc-tag{background:var(--lb2)}.cg .cc-tag{background:var(--cg2)}.pb .cc-tag{background:var(--pb2)}.ms .cc-tag{background:var(--ms2)}
+.cc-body{padding:9px 11px 11px}
+.cc-name{font-family:'Bebas Neue',cursive;font-size:16px;color:var(--white);line-height:1;margin-bottom:1px}
+.cc-ori{font-size:10px;color:var(--muted);font-style:italic;margin-bottom:6px}
+.cc-desc{font-size:11px;color:#a0a0c0;line-height:1.4}
+.cc-stats{display:flex;gap:5px;margin-top:7px}
+.stat{flex:1;background:var(--dark4);border-radius:4px;padding:3px 4px;text-align:center}
+.sv{font-family:'Bebas Neue',cursive;font-size:13px;line-height:1}
+.sk{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.lb .sv{color:var(--lb2)}.cg .sv{color:var(--cg2)}.pb .sv{color:var(--pb2)}.ms .sv{color:var(--ms2)}
+.cc-check{position:absolute;bottom:7px;right:7px;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--dark)}
+.lb.sel .cc-check{display:flex;background:var(--lb2)}.cg.sel .cc-check{display:flex;background:var(--cg2)}
+.pb.sel .cc-check{display:flex;background:var(--pb2)}.ms.sel .cc-check{display:flex;background:var(--ms2)}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:13px;border:none;border-radius:11px;font-family:'Bebas Neue',cursive;font-size:19px;letter-spacing:.07em;cursor:pointer;transition:all .18s}
+.btn:hover:not(:disabled){opacity:.88}.btn:active:not(:disabled){transform:scale(.98)}.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e0a800);color:var(--dark)}
+.btn-ghost{background:transparent;border:1.5px solid var(--dark4);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0;font-family:'Bebas Neue',cursive;font-size:16px}
+.btn-danger{background:rgba(200,50,30,.2);border:1.5px solid rgba(200,80,50,.4);color:#f08070;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:0}
+.btn-sm{padding:9px 14px;width:auto;font-size:14px}
+
+/* ── ROOM CODE ── */
+.room-code{font-family:'Bebas Neue',cursive;font-size:42px;font-weight:900;letter-spacing:.2em;color:var(--white);text-align:center;padding:16px;background:var(--dark3);border-radius:14px;border:1px solid var(--dark4);margin:10px 0}
+
+/* ── NOTIF ── */
+.notif{padding:10px 14px;border-radius:10px;font-size:13px;border:1px solid var(--dark4);margin-bottom:10px}
+.notif.info{background:rgba(124,114,232,.12);border-color:rgba(124,114,232,.3);color:#c0b8f8}
+.notif.warn{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:#e8c870}
+.notif.ok{background:rgba(7,201,138,.1);border-color:rgba(7,201,138,.3);color:#80e8c0}
+.notif.bad{background:rgba(200,50,30,.12);border-color:rgba(200,80,50,.3);color:#f0a090}
+.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lb2);animation:pulse 1.1s ease-in-out infinite;margin-right:6px}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+
+/* ── PLAYER LIST ── */
+.pl-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--dark4);border-radius:10px;background:var(--dark3);margin-bottom:7px}
+.pl-mini{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.pl-mini svg{width:22px;height:26px}
+.lb .pl-mini{background:var(--lb-d);border:1px solid var(--lb)}
+.cg .pl-mini{background:var(--cg-d);border:1px solid var(--cg)}
+.pb .pl-mini{background:var(--pb-d);border:1px solid var(--pb)}
+.ms .pl-mini{background:var(--ms-d);border:1px solid var(--ms)}
+.pl-name{font-size:13px;font-weight:500;color:var(--white);flex:1}
+.pl-theory{font-size:11px;color:var(--muted);font-style:italic}
+.pl-score{font-family:'Bebas Neue',cursive;font-size:16px}
+.lb .pl-score{color:var(--lb2)}.cg .pl-score{color:var(--cg2)}.pb .pl-score{color:var(--pb2)}.ms .pl-score{color:var(--ms2)}
+.pl-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;text-transform:uppercase;letter-spacing:.07em}
+.badge-turn{background:var(--gold);color:var(--dark)}
+.badge-wait{background:var(--dark4);color:var(--muted)}
+.badge-attack{background:rgba(200,50,30,.3);color:#f08070;border:1px solid rgba(200,80,50,.4)}
+.badge-me{background:rgba(7,201,138,.2);color:var(--lb2)}
+
+/* ── MARATHON ── */
+.marathon{background:var(--dark2);border:1px solid var(--dark4);border-radius:14px;padding:14px;margin-bottom:14px}
+.m-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.m-row{margin-bottom:9px}
+.m-meta{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.m-name{font-size:12px;font-weight:500;color:var(--white);flex:1}
+.m-pts{font-family:'Bebas Neue',cursive;font-size:15px}
+.lb .m-pts{color:var(--lb2)}.cg .m-pts{color:var(--cg2)}.pb .m-pts{color:var(--pb2)}.ms .m-pts{color:var(--ms2)}
+.track{position:relative;height:16px;background:var(--dark4);border-radius:8px}
+.track-in{position:absolute;inset:0;border-radius:8px;overflow:hidden}
+.track-fill{height:100%;border-radius:8px;transition:width .8s cubic-bezier(.34,1.56,.64,1);min-width:18px;display:flex;align-items:center;justify-content:flex-end;padding-right:1px}
+.lb .track-fill{background:linear-gradient(90deg,var(--lb-d),var(--lb2))}
+.cg .track-fill{background:linear-gradient(90deg,var(--cg-d),var(--cg2))}
+.pb .track-fill{background:linear-gradient(90deg,var(--pb-d),var(--pb2))}
+.ms .track-fill{background:linear-gradient(90deg,var(--ms-d),var(--ms2))}
+.rh{position:absolute;right:-13px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;overflow:hidden;background:var(--dark3);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.rh svg{width:14px;height:16px}
+.flag{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:11px;z-index:3}
+.ldr-badge{font-size:9px;font-weight:700;padding:1px 5px;border-radius:20px;background:var(--gold);color:var(--dark);margin-left:4px}
+
+/* ── SCENARIO ── */
+.scenario{background:var(--dark2);border:1px solid var(--dark4);border-radius:14px;padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
+.scenario::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--cg2),var(--lb2),var(--pb2))}
+.s-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:block}
+.s-q{font-family:'Crimson Pro',Georgia,serif;font-size:14px;color:var(--white);line-height:1.6;font-style:italic}
+
+/* ── ACTION BUTTONS ── */
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.ab{background:var(--dark3);border:1.5px solid var(--dark4);border-radius:11px;padding:11px 10px;cursor:pointer;text-align:left;transition:all .13s;font-family:'DM Sans',sans-serif;position:relative}
+.ab:hover:not(:disabled){transform:translateY(-1px);border-color:#444460}
+.ab:disabled{opacity:.3;cursor:not-allowed}
+.ab-type{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;display:block}
+.ab.atk .ab-type{color:#f06060}.ab.spc .ab-type{color:var(--pb2)}.ab.def .ab-type{color:var(--lb2)}
+.ab-text{font-size:12px;color:#c0c0d8;line-height:1.4}
+/* coherence badge on action */
+.coh-badge{position:absolute;top:7px;right:7px;font-size:9px;font-weight:700;padding:2px 5px;border-radius:20px}
+.coh-badge.own{background:rgba(7,201,138,.2);color:var(--lb2);border:1px solid rgba(7,201,138,.3)}
+.coh-badge.other{background:rgba(245,166,35,.15);color:var(--cg2);border:1px solid rgba(245,166,35,.25)}
+
+/* ── RESULT ── */
+.result-box{border-radius:12px;padding:13px 14px;margin-bottom:9px;border:1px solid;animation:si .3s ease}
+@keyframes si{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.result-box.hit{background:rgba(59,109,17,.14);border-color:#3B6D11}
+.result-box.miss{background:rgba(121,31,31,.14);border-color:#791F1F}
+.result-box.spc{background:rgba(60,52,137,.18);border-color:#534AB7}
+.result-box.warn{background:rgba(200,130,20,.12);border-color:#8a6010}
+.r-title{font-family:'Bebas Neue',cursive;font-size:19px;letter-spacing:.04em;margin-bottom:4px}
+.result-box.hit .r-title{color:#7bc832}.result-box.miss .r-title{color:#f07070}
+.result-box.spc .r-title{color:var(--pb2)}.result-box.warn .r-title{color:var(--cg2)}
+.r-fb{font-size:12px;color:#a0a0c0;line-height:1.5}
+.r-pts{font-family:'Bebas Neue',cursive;font-size:26px;margin-top:7px}
+.result-box.hit .r-pts{color:#7bc832}.result-box.miss .r-pts{color:#f07070}
+.result-box.spc .r-pts{color:var(--pb2)}.result-box.warn .r-pts{color:var(--cg2)}
+
+/* ── ATTACK PANEL ── */
+.attack-panel{background:rgba(200,50,30,.08);border:1px solid rgba(200,80,50,.3);border-radius:14px;padding:14px;margin-bottom:10px;animation:si .3s ease}
+.ap-title{font-family:'Bebas Neue',cursive;font-size:18px;color:#f07070;margin-bottom:4px}
+.ap-from{font-size:11px;color:var(--muted);margin-bottom:10px}
+.ap-attack{font-family:'Crimson Pro',Georgia,serif;font-size:14px;color:#f0c0b0;font-style:italic;line-height:1.55;padding:10px 12px;background:rgba(200,50,30,.1);border-radius:8px;border-left:3px solid rgba(200,80,50,.5);margin-bottom:10px}
+.weak-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.weak-btn{background:var(--dark3);border:1px solid var(--dark4);border-radius:9px;padding:9px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:left;transition:all .13s}
+.weak-btn:hover{border-color:#f08070;background:rgba(200,50,30,.08)}
+.weak-btn.sel-weak{border-color:#f08070;background:rgba(200,50,30,.15)}
+.weak-btn-label{font-size:10px;font-weight:700;color:#f07070;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
+.weak-btn-text{font-size:11px;color:#c0a0a0;line-height:1.35}
+
+/* ── WAITING SCREEN ── */
+.waiting-big{text-align:center;padding:2rem 0}
+.waiting-icon{font-size:48px;margin-bottom:12px;animation:bob .8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.waiting-title{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--white);margin-bottom:6px}
+.waiting-sub{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* ── END ── */
+.reflection{background:var(--dark3);border-left:3px solid var(--gold);border-radius:0 11px 11px 0;padding:13px 14px;margin-bottom:18px}
+.refl-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.refl-text{font-family:'Crimson Pro',Georgia,serif;font-size:14px;color:#d0ccc0;line-height:1.6;font-style:italic}
+.code-box{background:var(--dark4);border:1px solid #444460;border-radius:9px;padding:11px;font-family:monospace;font-size:10px;word-break:break-all;color:#a0d0a0;cursor:pointer;margin-bottom:9px;line-height:1.6}
+.mt10{margin-top:10px}.mt14{margin-top:14px}.mt18{margin-top:18px}
+hr{border:none;border-top:1px solid var(--dark4);margin:14px 0}
+
+/* ── TURN INDICATOR ── */
+.turn-banner{background:linear-gradient(135deg,rgba(245,200,66,.15),rgba(245,200,66,.05));border:1px solid rgba(245,200,66,.3);border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.turn-banner.my-turn{animation:glow 1.5s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(245,200,66,.2)}50%{box-shadow:0 0 16px 2px rgba(245,200,66,.15)}}
+.turn-banner.attack-turn{background:linear-gradient(135deg,rgba(200,50,30,.15),rgba(200,50,30,.05));border-color:rgba(200,80,50,.35)}
+.turn-banner.wait-turn{background:var(--dark3);border-color:var(--dark4)}
+
+/* ── MODERATOR PANEL ── */
+#mod-overlay{position:fixed;inset:0;background:rgba(5,5,8,.96);z-index:9999;display:none;flex-direction:column;overflow-y:auto}
+#mod-overlay.open{display:flex}
+.mod-wrap{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem;width:100%}
+.mod-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--dark4)}
+.mod-logo{font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:.18em;color:var(--gold);background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);padding:4px 12px;border-radius:20px}
+.mod-title{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--white);flex:1}
+.mod-close{background:transparent;border:1px solid var(--dark4);border-radius:8px;padding:7px 14px;color:var(--muted);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;transition:all .15s}
+.mod-close:hover{border-color:var(--muted);color:var(--white)}
+
+/* Report tabs */
+.rep-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.rep-tab{padding:8px 16px;border:1px solid var(--dark4);border-radius:8px;background:var(--dark3);color:var(--muted);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
+.rep-tab:hover{border-color:var(--muted)}
+.rep-tab.on{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:700}
+
+/* Summary cards */
+.sum-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.sum-card{background:var(--dark3);border:1px solid var(--dark4);border-radius:12px;padding:14px 12px;text-align:center}
+.sum-card-val{font-family:'Bebas Neue',cursive;font-size:36px;line-height:1;color:var(--gold)}
+.sum-card-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+/* Ranking table */
+.rep-table{width:100%;border-collapse:collapse;margin-bottom:20px}
+.rep-table th{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--dark4);text-align:left;white-space:nowrap}
+.rep-table td{padding:10px 10px;border-bottom:1px solid var(--dark4);font-size:13px;vertical-align:middle}
+.rep-table tr:last-child td{border-bottom:none}
+.rep-table tr:hover td{background:var(--dark3)}
+.rep-table .rank-num{font-family:'Bebas Neue',cursive;font-size:20px;text-align:center}
+.rep-table .score-big{font-family:'Bebas Neue',cursive;font-size:22px}
+.coh-pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.coh-high{background:rgba(7,201,138,.2);color:var(--lb2);border:1px solid rgba(7,201,138,.25)}
+.coh-mid{background:rgba(245,166,35,.15);color:var(--cg2);border:1px solid rgba(245,166,35,.2)}
+.coh-low{background:rgba(200,50,30,.15);color:#f08070;border:1px solid rgba(200,80,50,.2)}
+
+/* Detail accordion */
+.player-accordion{margin-bottom:10px;border:1px solid var(--dark4);border-radius:12px;overflow:hidden}
+.acc-header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;background:var(--dark3);transition:background .15s}
+.acc-header:hover{background:var(--dark2)}
+.acc-body{display:none;padding:12px 14px;background:var(--dark2);border-top:1px solid var(--dark4)}
+.acc-body.open{display:block}
+.dec-row{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--dark4)}
+.dec-row:last-child{border-bottom:none}
+.dec-icon{font-size:14px;min-width:16px;margin-top:1px}
+.dec-round{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px}
+.dec-action{font-family:'Crimson Pro',Georgia,serif;font-size:13px;color:var(--white);font-style:italic;margin-bottom:3px;line-height:1.4}
+.dec-fb{font-size:11px;color:var(--muted);line-height:1.45}
+.dec-pts{font-family:'Bebas Neue',cursive;font-size:17px;white-space:nowrap;margin-left:auto}
+
+/* Bar chart */
+.bar-chart{margin-bottom:20px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-label{font-size:12px;color:var(--white);min-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:22px;background:var(--dark4);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+.bar-score{font-family:'Bebas Neue',cursive;font-size:13px;color:rgba(255,255,255,.9)}
+
+/* PIN screen */
+.pin-wrap{max-width:360px;margin:0 auto;padding:3rem 1.5rem;text-align:center}
+.pin-title{font-family:'Bebas Neue',cursive;font-size:32px;color:var(--white);margin-bottom:8px}
+.pin-sub{font-size:13px;color:var(--muted);margin-bottom:24px;font-style:italic}
+.pin-inputs{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.pin-digit{width:52px;height:64px;background:var(--dark3);border:2px solid var(--dark4);border-radius:12px;color:var(--white);font-family:'Bebas Neue',cursive;font-size:32px;text-align:center;transition:border-color .2s;-webkit-text-security:disc}
+.pin-digit:focus{outline:none;border-color:var(--gold)}
+.pin-err{font-size:12px;color:#f07070;min-height:18px;margin-bottom:10px}
+
+/* Moderator floating button */
+#mod-btn{position:fixed;bottom:20px;left:16px;z-index:998;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+#mod-btn:hover{background:rgba(245,200,66,.22);transform:scale(1.08)}
+
+/* Poll status */
+.mod-poll{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:14px}
+
+/* Responsive */
+@media(max-width:500px){
+  .rep-table th:nth-child(4),.rep-table td:nth-child(4){display:none}
+  .sum-cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ══ LOBBY ══ -->
+<div class="screen active" id="s-lobby">
+  <div class="hero">
+    <div class="hero-ey">Universidad de Antioquia · EF Colombia</div>
+    <div class="hero-t fd">La Batalla<br>de las <span>Hermenéuticas</span></div>
+    <div class="hero-s">Debate académico multijugador por turnos</div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="switchTab('create')">Crear sala</button>
+    <button class="tab" onclick="switchTab('join')">Unirse</button>
+  </div>
+  <div id="tab-create">
+    <div class="field"><label>Tu nombre</label><input class="inp" id="c-name" placeholder="Ej: María García" maxlength="28"></div>
+    <div class="sec">Elige tu teórico</div>
+    <div class="cg-grid" id="cg-create"></div>
+    <button class="btn btn-gold" id="c-btn" onclick="createRoom()" disabled>CREAR SALA</button>
+  </div>
+  <div id="tab-join" style="display:none">
+    <div class="field"><label>Tu nombre</label><input class="inp" id="j-name" placeholder="Ej: Carlos Pérez" maxlength="28"></div>
+    <div class="field"><label>Código de sala</label><input class="inp" id="j-code" placeholder="XXXX" maxlength="4" style="letter-spacing:.2em;font-family:'Bebas Neue',cursive;font-size:22px;text-transform:uppercase"></div>
+    <div class="sec">Elige tu teórico</div>
+    <div class="cg-grid" id="cg-join"></div>
+    <button class="btn btn-gold" id="j-btn" onclick="joinRoom()" disabled>UNIRSE AL DEBATE</button>
+    <p id="j-err" style="font-size:12px;color:#f07070;margin-top:8px;display:none"></p>
+  </div>
+</div>
+
+<!-- ══ WAITING ROOM ══ -->
+<div class="screen" id="s-waiting">
+  <div class="hero" style="padding:1rem 0 .8rem">
+    <div class="hero-ey">Sala de espera</div>
+    <div class="hero-t fd" style="font-size:36px">Esperando jugadores</div>
+  </div>
+  <div class="sec">Código de sala</div>
+  <div class="room-code" id="w-code">----</div>
+  <div class="notif info mt10" id="w-notif"><span class="pulse"></span>Esperando...</div>
+  <div class="sec mt14">Jugadores (<span id="w-count">1</span>)</div>
+  <div id="w-players"></div>
+  <button class="btn btn-gold mt14" id="w-start" onclick="hostStart()" style="display:none">INICIAR DEBATE</button>
+  <button class="btn btn-ghost mt10" onclick="leaveLobby()">SALIR</button>
+</div>
+
+<!-- ══ WAITING TURN ══ -->
+<div class="screen" id="s-waiting-turn">
+  <div class="marathon" id="wt-marathon"></div>
+  <div class="sec">Jugadores</div>
+  <div id="wt-players"></div>
+  <div class="waiting-big" id="wt-msg">
+    <div class="waiting-icon">⏳</div>
+    <div class="waiting-title">Esperando tu turno</div>
+    <div class="waiting-sub">El sistema te avisará cuando debas actuar</div>
+  </div>
+</div>
+
+<!-- ══ MY TURN — ARGUMENT ══ -->
+<div class="screen" id="s-my-turn">
+  <div class="turn-banner my-turn">
+    <span style="font-size:22px">⚡</span>
+    <div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:18px;color:var(--gold)">¡ES TU TURNO!</div>
+      <div style="font-size:11px;color:var(--muted)" id="mt-round-info">Ronda 1 · Argumenta</div>
+    </div>
+    <div style="margin-left:auto;font-family:'Bebas Neue',cursive;font-size:26px" id="mt-score">0</div>
+  </div>
+  <div class="marathon" id="mt-marathon"></div>
+  <div class="scenario" id="mt-scenario">
+    <span class="s-tag" id="mt-tag"></span>
+    <p class="s-q" id="mt-q"></p>
+  </div>
+  <div class="sec" style="margin-bottom:8px">Elige tu argumento</div>
+  <div class="ag" id="mt-actions"></div>
+  <div id="mt-result"></div>
+</div>
+
+<!-- ══ ATTACK PHASE ══ -->
+<div class="screen" id="s-attack">
+  <div class="turn-banner attack-turn">
+    <span style="font-size:22px">⚔️</span>
+    <div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:18px;color:#f07070">TU TURNO: ATACAR</div>
+      <div style="font-size:11px;color:var(--muted)" id="atk-target-info">Ataca a...</div>
+    </div>
+  </div>
+  <div class="notif warn" id="atk-context"></div>
+  <div class="sec" style="margin-bottom:8px">Elige una debilidad para atacar</div>
+  <div class="weak-grid" id="atk-weaknesses"></div>
+  <div class="field mt10">
+    <label>Personaliza tu ataque (opcional)</label>
+    <textarea class="inp" id="atk-custom" rows="2" placeholder="Añade tu propia crítica al argumento del rival..." style="resize:none;line-height:1.5"></textarea>
+  </div>
+  <button class="btn btn-danger mt10" id="atk-send-btn" onclick="sendAttack()">⚔️ LANZAR ATAQUE</button>
+</div>
+
+<!-- ══ DEFEND PHASE ══ -->
+<div class="screen" id="s-defend">
+  <div class="turn-banner attack-turn">
+    <span style="font-size:22px">🛡️</span>
+    <div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:18px;color:#f07070">¡DEFIÉNDETE!</div>
+      <div style="font-size:11px;color:var(--muted)" id="def-from-info">Ataque de...</div>
+    </div>
+    <div style="margin-left:auto;font-family:'Bebas Neue',cursive;font-size:26px" id="def-score">0</div>
+  </div>
+  <div class="attack-panel" id="def-attack-panel">
+    <div class="ap-title">⚔️ Ataque recibido</div>
+    <div class="ap-from" id="def-attacker"></div>
+    <div class="ap-attack" id="def-attack-text"></div>
+  </div>
+  <div class="sec" style="margin-bottom:8px">Elige tu defensa</div>
+  <div class="ag" id="def-actions"></div>
+  <div id="def-result"></div>
+</div>
+
+<!-- ══ END ══ -->
+<div class="screen" id="s-end">
+  <div class="hero" style="padding:1rem 0 .8rem">
+    <div class="hero-ey">Debate concluido</div>
+    <div class="hero-t fd" style="font-size:38px" id="e-title"></div>
+  </div>
+  <div style="text-align:center;background:var(--dark2);border:1px solid var(--dark4);border-radius:14px;padding:18px;margin-bottom:16px">
+    <div id="e-trophy" style="font-size:44px;margin-bottom:6px"></div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:54px;line-height:1" id="e-score"></div>
+    <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">puntos finales</div>
+    <div style="font-size:13px;color:#a0a0c0;margin-top:6px" id="e-charname"></div>
+  </div>
+  <p id="e-sub" style="font-family:'Crimson Pro',Georgia,serif;font-size:14px;color:#c0c0d0;line-height:1.6;font-style:italic;margin-bottom:16px;text-align:center"></p>
+  <div class="sec">Clasificación final</div>
+  <div id="e-leaderboard" style="margin-bottom:16px"></div>
+  <div class="reflection"><div class="refl-label">Para reflexionar</div><div class="refl-text" id="e-refl"></div></div>
+  <div style="background:var(--dark2);border:1px solid var(--dark4);border-radius:12px;padding:13px;margin-bottom:14px;display:none" id="e-code-section">
+    <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:7px">📋 Código para el profesor</div>
+    <div class="code-box" id="e-code" onclick="copyCode()"></div>
+    <button class="btn btn-ghost" onclick="copyCode()" id="copy-btn">COPIAR CÓDIGO</button>
+  </div>
+  <button class="btn btn-gold mt10" onclick="goLobby()">JUGAR DE NUEVO</button>
+</div>
+
+</div><!-- wrap -->
+
+<!-- ══════════════════════════════════════
+     MODERATOR OVERLAY
+══════════════════════════════════════ -->
+<div id="mod-overlay">
+
+  <!-- PIN screen -->
+  <div id="mod-pin-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh">
+    <div class="pin-wrap">
+      <div style="font-size:40px;margin-bottom:12px">🎓</div>
+      <div class="pin-title">Panel del Moderador</div>
+      <div class="pin-sub">Ingresa el PIN de 4 dígitos para acceder al informe</div>
+      <div class="pin-inputs">
+        <input class="pin-digit inp" id="pin-0" maxlength="1" type="password" inputmode="numeric" oninput="pinInput(0)" onkeydown="pinKey(event,0)">
+        <input class="pin-digit inp" id="pin-1" maxlength="1" type="password" inputmode="numeric" oninput="pinInput(1)" onkeydown="pinKey(event,1)">
+        <input class="pin-digit inp" id="pin-2" maxlength="1" type="password" inputmode="numeric" oninput="pinInput(2)" onkeydown="pinKey(event,2)">
+        <input class="pin-digit inp" id="pin-3" maxlength="1" type="password" inputmode="numeric" oninput="pinInput(3)" onkeydown="pinKey(event,3)">
+      </div>
+      <div class="pin-err" id="pin-err"></div>
+      <button class="btn btn-gold" onclick="checkPin()">ACCEDER AL PANEL</button>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="closeMod()">CANCELAR</button>
+    </div>
+  </div>
+
+  <!-- Report panel -->
+  <div id="mod-report-screen" style="display:none">
+    <div class="mod-wrap">
+
+      <div class="mod-header">
+        <div class="mod-logo">MODERADOR</div>
+        <div class="mod-title">Panel de resultados</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="mod-close" onclick="refreshReport()">↻ Actualizar</button>
+          <button class="mod-close" id="btn-pdf" onclick="exportPDF()" style="background:rgba(220,50,50,.15);border-color:rgba(220,80,80,.4);color:#f08080">⬇ PDF</button>
+          <button class="mod-close" id="btn-xls" onclick="exportExcel()" style="background:rgba(30,160,80,.15);border-color:rgba(30,160,80,.4);color:#60d090">⬇ Excel</button>
+          <button class="mod-close" onclick="closeMod()">✕ Cerrar</button>
+        </div>
+      </div>
+
+      <div class="mod-poll" id="mod-room-info">
+        <span class="pulse"></span>Sala: —
+      </div>
+
+      <!-- Report tabs -->
+      <div class="rep-tabs">
+        <button class="rep-tab on" onclick="switchReport('ranking')">🏆 Ranking rápido</button>
+        <button class="rep-tab" onclick="switchReport('summary')">📊 Resumen completo</button>
+        <button class="rep-tab" onclick="switchReport('detail')">🔍 Informe detallado</button>
+      </div>
+
+      <!-- REPORT 1: Quick ranking -->
+      <div id="rep-ranking">
+        <div class="sum-cards" id="rep-sum-cards"></div>
+        <div class="bar-chart" id="rep-barchart"></div>
+        <table class="rep-table" id="rep-quick-table">
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th>Estudiante</th>
+              <th>Teórico</th>
+              <th>Puntaje</th>
+            </tr>
+          </thead>
+          <tbody id="rep-quick-body"></tbody>
+        </table>
+      </div>
+
+      <!-- REPORT 2: Full summary -->
+      <div id="rep-summary" style="display:none">
+        <table class="rep-table" id="rep-full-table">
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th>Estudiante</th>
+              <th>Teórico / Hermenéutica</th>
+              <th>Puntaje</th>
+              <th>Aciertos</th>
+              <th>Coherencia</th>
+            </tr>
+          </thead>
+          <tbody id="rep-full-body"></tbody>
+        </table>
+        <div style="margin-top:16px;padding:12px 14px;background:var(--dark3);border-radius:12px;border:1px solid var(--dark4)" id="rep-insights"></div>
+      </div>
+
+      <!-- REPORT 3: Detailed -->
+      <div id="rep-detail" style="display:none">
+        <div class="notif info" style="margin-bottom:14px">
+          Haz clic en cada estudiante para ver el detalle de sus decisiones por ronda.
+        </div>
+        <div id="rep-accordions"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Moderator floating button -->
+<button id="mod-btn" onclick="openMod()" title="Panel del moderador">🎓</button>
+
+<script>
+// ═══════════════════════════════════════════
+// PORTRAITS (mini SVG faces)
+// ═══════════════════════════════════════════
+const FACES={
+
+  /* ─── LE BOULCH — laboratorio de fisiología, maqueta cerebro + cuerpo anatómico ─── */
+  lb:`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="lb-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1a12"/><stop offset="100%" stop-color="#06300e"/></linearGradient></defs>
+  <!-- Room background -->
+  <rect width="200" height="240" fill="url(#lb-bg)"/>
+  <!-- Floor -->
+  <rect x="0" y="185" width="200" height="55" fill="#081808"/>
+  <line x1="0" y1="185" x2="200" y2="185" stroke="#0f3a18" stroke-width="1"/>
+  <!-- Back wall panels -->
+  <rect x="0" y="0" width="200" height="185" fill="#081a0e"/>
+  <line x1="66" y1="0" x2="66" y2="185" stroke="#0f3020" stroke-width=".5" opacity=".6"/>
+  <line x1="133" y1="0" x2="133" y2="185" stroke="#0f3020" stroke-width=".5" opacity=".6"/>
+  <!-- Lab bench left -->
+  <rect x="0" y="140" width="72" height="12" rx="2" fill="#0d2a14"/>
+  <rect x="2" y="148" width="68" height="40" fill="#091a0c"/>
+  <!-- Microscope on bench -->
+  <rect x="8" y="118" width="8" height="22" rx="2" fill="#1a4a22"/>
+  <ellipse cx="12" cy="118" rx="6" ry="4" fill="#1a4a22"/>
+  <rect x="10" y="108" width="4" height="12" rx="1" fill="#0f3a18"/>
+  <ellipse cx="12" cy="108" rx="4" ry="3" fill="#2a6a32" opacity=".8"/>
+  <!-- Beakers/flasks -->
+  <ellipse cx="28" cy="139" rx="5" ry="6" fill="#0a2a10" stroke="#1a5a28" stroke-width=".8"/>
+  <rect x="25" y="133" width="6" height="3" fill="#0a2a10" stroke="#1a5a28" stroke-width=".8"/>
+  <ellipse cx="28" cy="137" rx="3" ry="2" fill="#07c98a" opacity=".3"/>
+  <ellipse cx="42" cy="140" rx="4" ry="5" fill="#0a2a10" stroke="#1a5a28" stroke-width=".8"/>
+  <rect x="39" y="135" width="5" height="2" fill="#0a2a10" stroke="#1a5a28" stroke-width=".8"/>
+  <ellipse cx="42" cy="138" rx="2.5" ry="2" fill="#07c98a" opacity=".2"/>
+  <!-- Test tubes rack -->
+  <rect x="52" y="128" width="16" height="3" rx="1" fill="#1a3a20"/>
+  <rect x="54" y="131" width="3" height="9" rx="1" fill="#0a2818" stroke="#1a5a28" stroke-width=".5"/>
+  <rect x="59" y="131" width="3" height="9" rx="1" fill="#0a2818" stroke="#1a5a28" stroke-width=".5"/>
+  <rect x="64" y="131" width="3" height="9" rx="1" fill="#0a2818" stroke="#1a5a28" stroke-width=".5"/>
+  <rect x="54" y="131" width="3" height="4" rx="1" fill="#07c98a" opacity=".4"/>
+  <rect x="59" y="131" width="3" height="6" rx="1" fill="#0faa70" opacity=".3"/>
+  <!-- ANATOMICAL BODY MODEL right side -->
+  <rect x="148" y="70" width="2" height="115" fill="#1a3a20"/><!-- pole -->
+  <ellipse cx="149" cy="182" rx="8" ry="3" fill="#0d2a14"/><!-- base -->
+  <!-- Body silhouette -->
+  <ellipse cx="149" cy="82" rx="9" ry="10" fill="#1a3a20" stroke="#07c98a" stroke-width=".7"/><!-- head -->
+  <rect x="141" y="92" width="16" height="28" rx="4" fill="#0d2818" stroke="#07c98a" stroke-width=".7"/><!-- torso -->
+  <!-- rib lines -->
+  <line x1="143" y1="97" x2="156" y2="97" stroke="#07c98a" stroke-width=".5" opacity=".5"/>
+  <line x1="143" y1="101" x2="156" y2="101" stroke="#07c98a" stroke-width=".5" opacity=".5"/>
+  <line x1="143" y1="105" x2="156" y2="105" stroke="#07c98a" stroke-width=".5" opacity=".5"/>
+  <line x1="143" y1="109" x2="156" y2="109" stroke="#07c98a" stroke-width=".5" opacity=".5"/>
+  <!-- spine -->
+  <line x1="149" y1="92" x2="149" y2="120" stroke="#07c98a" stroke-width=".8" opacity=".6"/>
+  <!-- arms -->
+  <line x1="141" y1="95" x2="132" y2="112" stroke="#0d2818" stroke-width="5" stroke-linecap="round"/>
+  <line x1="157" y1="95" x2="166" y2="112" stroke="#0d2818" stroke-width="5" stroke-linecap="round"/>
+  <line x1="141" y1="95" x2="132" y2="112" stroke="#07c98a" stroke-width=".7" stroke-linecap="round"/>
+  <line x1="157" y1="95" x2="166" y2="112" stroke="#07c98a" stroke-width=".7" stroke-linecap="round"/>
+  <!-- legs -->
+  <line x1="145" y1="120" x2="141" y2="148" stroke="#0d2818" stroke-width="5" stroke-linecap="round"/>
+  <line x1="153" y1="120" x2="157" y2="148" stroke="#0d2818" stroke-width="5" stroke-linecap="round"/>
+  <line x1="145" y1="120" x2="141" y2="148" stroke="#07c98a" stroke-width=".7" stroke-linecap="round"/>
+  <line x1="153" y1="120" x2="157" y2="148" stroke="#07c98a" stroke-width=".7" stroke-linecap="round"/>
+  <!-- BRAIN MODEL on pedestal center-right -->
+  <rect x="100" y="148" width="28" height="4" rx="1" fill="#1a3a20"/><!-- pedestal top -->
+  <rect x="108" y="152" width="12" height="18" fill="#0d2814"/><!-- pedestal -->
+  <rect x="104" y="168" width="20" height="4" rx="1" fill="#1a3a20"/><!-- base -->
+  <!-- Brain shape -->
+  <ellipse cx="114" cy="140" rx="14" ry="11" fill="#1a2818"/>
+  <ellipse cx="107" cy="138" rx="7" ry="8" fill="#0d2010" stroke="#07c98a" stroke-width=".8"/>
+  <ellipse cx="121" cy="138" rx="7" ry="8" fill="#0d2010" stroke="#07c98a" stroke-width=".8"/>
+  <!-- brain folds -->
+  <path d="M107 132 Q110 130 113 132 Q116 130 119 132" fill="none" stroke="#07c98a" stroke-width=".7" opacity=".7"/>
+  <path d="M106 136 Q109 134 112 136 Q115 134 118 136 Q121 134 124 136" fill="none" stroke="#07c98a" stroke-width=".7" opacity=".6"/>
+  <path d="M107 140 Q110 138 113 140 Q116 138 119 140 Q122 138 124 140" fill="none" stroke="#07c98a" stroke-width=".7" opacity=".5"/>
+  <!-- glow -->
+  <ellipse cx="114" cy="140" rx="14" ry="11" fill="#07c98a" opacity=".05"/>
+  <!-- Lab bench right background -->
+  <rect x="130" y="155" width="70" height="10" rx="2" fill="#0d2a14"/>
+  <rect x="132" y="162" width="66" height="30" fill="#091a0c"/>
+  <!-- Books on shelf -->
+  <rect x="82" y="90" width="8" height="40" rx="1" fill="#0a3a14"/><rect x="82" y="90" width="8" height="40" rx="1" fill="none" stroke="#07c98a" stroke-width=".4" opacity=".5"/>
+  <rect x="91" y="94" width="7" height="36" rx="1" fill="#082818"/><rect x="91" y="94" width="7" height="36" rx="1" fill="none" stroke="#07c98a" stroke-width=".4" opacity=".4"/>
+  <rect x="99" y="88" width="6" height="42" rx="1" fill="#0a4020"/><rect x="99" y="88" width="6" height="42" rx="1" fill="none" stroke="#07c98a" stroke-width=".4" opacity=".5"/>
+  <!-- Overhead lab light -->
+  <rect x="70" y="0" width="60" height="6" rx="2" fill="#1a4a22"/>
+  <rect x="78" y="6" width="44" height="4" rx="1" fill="#07c98a" opacity=".25"/>
+  <!-- light cone -->
+  <polygon points="80,10 120,10 130,55 70,55" fill="#07c98a" opacity=".04"/>
+  <!-- LE BOULCH FIGURE — small, middle distance, lab coat -->
+  <!-- Shadow -->
+  <ellipse cx="62" cy="187" rx="14" ry="4" fill="#000" opacity=".3"/>
+  <!-- Legs -->
+  <rect x="55" y="165" width="7" height="22" rx="3" fill="#1a3a22"/>
+  <rect x="63" y="165" width="7" height="22" rx="3" fill="#1a3a22"/>
+  <!-- Lab coat body -->
+  <rect x="50" y="130" width="28" height="38" rx="5" fill="#e8f0e8"/>
+  <!-- coat lapels -->
+  <polygon points="62,130 55,138 62,135" fill="#c8d8c8"/>
+  <polygon points="64,130 71,138 64,135" fill="#c8d8c8"/>
+  <!-- arm extended (pointing) -->
+  <path d="M50 138 Q36 132 28 125" fill="none" stroke="#e8f0e8" stroke-width="8" stroke-linecap="round"/>
+  <path d="M50 138 Q36 132 28 125" fill="none" stroke="#c8d8c8" stroke-width="6" stroke-linecap="round"/>
+  <!-- hand -->
+  <ellipse cx="27" cy="124" rx="5" ry="4" fill="#c8855a"/>
+  <!-- other arm down -->
+  <path d="M78 138 Q82 148 80 158" fill="none" stroke="#e8f0e8" stroke-width="7" stroke-linecap="round"/>
+  <!-- Neck -->
+  <rect x="59" y="118" width="8" height="14" rx="3" fill="#c8855a"/>
+  <!-- HEAD — calvo, robusto -->
+  <ellipse cx="63" cy="110" rx="14" ry="15" fill="#c8855a"/>
+  <!-- calvicie -->
+  <ellipse cx="63" cy="98" rx="13" ry="5" fill="#b07040" opacity=".3"/>
+  <!-- stubble lateral -->
+  <ellipse cx="77" cy="108" rx="3" ry="5" fill="#6a3a18" opacity=".4"/>
+  <ellipse cx="49" cy="108" rx="3" ry="5" fill="#6a3a18" opacity=".4"/>
+  <!-- eyebrows -->
+  <path d="M55 105 Q59 103 63 105" fill="none" stroke="#5a3010" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M63 105 Q67 103 71 105" fill="none" stroke="#5a3010" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- eyes -->
+  <ellipse cx="57" cy="109" rx="3.5" ry="3" fill="#fff"/>
+  <ellipse cx="69" cy="109" rx="3.5" ry="3" fill="#fff"/>
+  <circle cx="57.5" cy="109.5" r="2" fill="#3a2010"/>
+  <circle cx="69.5" cy="109.5" r="2" fill="#3a2010"/>
+  <!-- nose -->
+  <ellipse cx="63" cy="114" rx="2.5" ry="2" fill="#b07040"/>
+  <!-- mouth open -->
+  <path d="M58 119 Q63 123 68 119" fill="#8a4020" stroke-width=".5"/>
+  <!-- ear -->
+  <ellipse cx="49" cy="110" rx="3" ry="4" fill="#c08060"/>
+  <ellipse cx="77" cy="110" rx="3" ry="4" fill="#c08060"/>
+  <!-- Green ambient glow from monitors -->
+  <rect x="0" y="0" width="200" height="240" fill="#07c98a" opacity=".02"/>
+</svg>`,
+
+  /* ─── CAGIGAL — filas de deportistas, elemento de fe al fondo ─── */
+  cg:`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="cg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1008"/><stop offset="60%" stop-color="#3a2008"/><stop offset="100%" stop-color="#1a0c04"/></linearGradient></defs>
+  <!-- Sky/stadium bg -->
+  <rect width="200" height="240" fill="url(#cg-sky)"/>
+  <!-- Stadium lights glow top -->
+  <ellipse cx="30" cy="15" rx="18" ry="8" fill="#f5a623" opacity=".18"/>
+  <ellipse cx="170" cy="15" rx="18" ry="8" fill="#f5a623" opacity=".18"/>
+  <ellipse cx="100" cy="8" rx="25" ry="6" fill="#f5a623" opacity=".1"/>
+  <!-- CROSS / RELIGIOUS SYMBOL background center top -->
+  <rect x="93" y="5" width="14" height="42" rx="3" fill="#7a4a00" opacity=".6"/>
+  <rect x="82" y="17" width="36" height="10" rx="3" fill="#7a4a00" opacity=".6"/>
+  <!-- cross glow -->
+  <rect x="94" y="6" width="12" height="40" rx="2" fill="#f5a623" opacity=".12"/>
+  <rect x="83" y="18" width="34" height="8" rx="2" fill="#f5a623" opacity=".12"/>
+  <!-- aureola around cross -->
+  <ellipse cx="100" cy="28" rx="22" ry="22" fill="#f5a623" opacity=".05"/>
+  <!-- Stadium tiers background -->
+  <rect x="0" y="45" width="200" height="20" rx="0" fill="#2a1808" opacity=".7"/>
+  <rect x="0" y="58" width="200" height="18" rx="0" fill="#1a1008" opacity=".7"/>
+  <!-- tiny crowd silhouettes -->
+  <g opacity=".4" fill="#8a6030">
+    <ellipse cx="12" cy="50" rx="4" ry="5"/><ellipse cx="22" cy="50" rx="4" ry="5"/>
+    <ellipse cx="32" cy="50" rx="4" ry="5"/><ellipse cx="42" cy="50" rx="4" ry="5"/>
+    <ellipse cx="52" cy="50" rx="4" ry="5"/><ellipse cx="62" cy="50" rx="4" ry="5"/>
+    <ellipse cx="72" cy="50" rx="4" ry="5"/><ellipse cx="82" cy="50" rx="4" ry="5"/>
+    <ellipse cx="92" cy="50" rx="4" ry="5"/><ellipse cx="102" cy="50" rx="4" ry="5"/>
+    <ellipse cx="112" cy="50" rx="4" ry="5"/><ellipse cx="122" cy="50" rx="4" ry="5"/>
+    <ellipse cx="132" cy="50" rx="4" ry="5"/><ellipse cx="142" cy="50" rx="4" ry="5"/>
+    <ellipse cx="152" cy="50" rx="4" ry="5"/><ellipse cx="162" cy="50" rx="4" ry="5"/>
+    <ellipse cx="172" cy="50" rx="4" ry="5"/><ellipse cx="182" cy="50" rx="4" ry="5"/>
+  </g>
+  <!-- Running track -->
+  <rect x="0" y="170" width="200" height="70" fill="#2a1a08"/>
+  <ellipse cx="100" cy="185" rx="95" ry="30" fill="none" stroke="#c87820" stroke-width="2" opacity=".4"/>
+  <ellipse cx="100" cy="185" rx="80" ry="24" fill="none" stroke="#c87820" stroke-width="1" opacity=".3"/>
+  <!-- Field green -->
+  <ellipse cx="100" cy="185" rx="75" ry="20" fill="#0a1a06" opacity=".8"/>
+  <!-- ROWS OF DISCIPLINED ATHLETES — background, in formation -->
+  <!-- Row 1 far back small -->
+  <g opacity=".55">
+    <g fill="#8a6030">
+      <ellipse cx="20" cy="88" rx="5" ry="6"/><ellipse cx="36" cy="88" rx="5" ry="6"/><ellipse cx="52" cy="88" rx="5" ry="6"/>
+      <ellipse cx="68" cy="88" rx="5" ry="6"/><ellipse cx="84" cy="88" rx="5" ry="6"/><ellipse cx="100" cy="88" rx="5" ry="6"/>
+      <ellipse cx="116" cy="88" rx="5" ry="6"/><ellipse cx="132" cy="88" rx="5" ry="6"/><ellipse cx="148" cy="88" rx="5" ry="6"/>
+      <ellipse cx="164" cy="88" rx="5" ry="6"/><ellipse cx="180" cy="88" rx="5" ry="6"/>
+    </g>
+    <!-- Bodies -->
+    <g fill="#5a3808">
+      <rect x="17" y="94" width="6" height="14" rx="2"/><rect x="33" y="94" width="6" height="14" rx="2"/>
+      <rect x="49" y="94" width="6" height="14" rx="2"/><rect x="65" y="94" width="6" height="14" rx="2"/>
+      <rect x="81" y="94" width="6" height="14" rx="2"/><rect x="97" y="94" width="6" height="14" rx="2"/>
+      <rect x="113" y="94" width="6" height="14" rx="2"/><rect x="129" y="94" width="6" height="14" rx="2"/>
+      <rect x="145" y="94" width="6" height="14" rx="2"/><rect x="161" y="94" width="6" height="14" rx="2"/>
+      <rect x="177" y="94" width="6" height="14" rx="2"/>
+    </g>
+  </g>
+  <!-- Row 2 mid -->
+  <g opacity=".7">
+    <g fill="#b07840">
+      <ellipse cx="14" cy="120" rx="6" ry="7"/><ellipse cx="34" cy="120" rx="6" ry="7"/><ellipse cx="54" cy="120" rx="6" ry="7"/>
+      <ellipse cx="74" cy="120" rx="6" ry="7"/><ellipse cx="94" cy="120" rx="6" ry="7"/><ellipse cx="114" cy="120" rx="6" ry="7"/>
+      <ellipse cx="134" cy="120" rx="6" ry="7"/><ellipse cx="154" cy="120" rx="6" ry="7"/><ellipse cx="174" cy="120" rx="6" ry="7"/>
+    </g>
+    <g fill="#6a3810">
+      <rect x="11" y="127" width="7" height="18" rx="2"/><rect x="31" y="127" width="7" height="18" rx="2"/>
+      <rect x="51" y="127" width="7" height="18" rx="2"/><rect x="71" y="127" width="7" height="18" rx="2"/>
+      <rect x="91" y="127" width="7" height="18" rx="2"/><rect x="111" y="127" width="7" height="18" rx="2"/>
+      <rect x="131" y="127" width="7" height="18" rx="2"/><rect x="151" y="127" width="7" height="18" rx="2"/>
+      <rect x="171" y="127" width="7" height="18" rx="2"/>
+    </g>
+    <!-- formation lines -->
+    <line x1="10" y1="145" x2="190" y2="145" stroke="#c87820" stroke-width=".4" opacity=".3"/>
+  </g>
+  <!-- CAGIGAL FIGURE — foreground, slightly left-center, pointing -->
+  <!-- Shadow -->
+  <ellipse cx="72" cy="205" rx="18" ry="5" fill="#000" opacity=".4"/>
+  <!-- Legs -->
+  <rect x="64" y="178" width="8" height="27" rx="3" fill="#1a1a1a"/>
+  <rect x="74" y="178" width="8" height="27" rx="3" fill="#1a1a1a"/>
+  <!-- Trousers stripe -->
+  <line x1="68" y1="178" x2="68" y2="205" stroke="#3a3a3a" stroke-width=".5"/>
+  <line x1="78" y1="178" x2="78" y2="205" stroke="#3a3a3a" stroke-width=".5"/>
+  <!-- Suit body -->
+  <rect x="56" y="140" width="36" height="42" rx="6" fill="#2a2a2a"/>
+  <!-- suit texture -->
+  <rect x="56" y="140" width="36" height="42" rx="6" fill="none" stroke="#3a3a3a" stroke-width=".5"/>
+  <!-- lapels -->
+  <polygon points="72,140 60,154 70,150" fill="#1a1a1a"/>
+  <polygon points="76,140 88,154 78,150" fill="#1a1a1a"/>
+  <!-- tie -->
+  <polygon points="71,142 77,142 75,175 73,175" fill="#111"/>
+  <!-- ARM raised with hand up (characteristic) -->
+  <path d="M88 148 Q100 138 108 128" fill="none" stroke="#2a2a2a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M88 148 Q100 138 108 128" fill="none" stroke="#b87848" stroke-width="6" stroke-linecap="round"/>
+  <!-- hand fingers -->
+  <path d="M106 126 Q108 120 107 116" fill="none" stroke="#b87848" stroke-width="3" stroke-linecap="round"/>
+  <path d="M109 127 Q112 121 111 117" fill="none" stroke="#b87848" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M103 125 Q104 119 102 115" fill="none" stroke="#b87848" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- other arm down -->
+  <path d="M56 150 Q46 162 48 172" fill="none" stroke="#2a2a2a" stroke-width="9" stroke-linecap="round"/>
+  <!-- Neck -->
+  <rect x="68" y="128" width="10" height="14" rx="3" fill="#b87848"/>
+  <!-- HEAD — robust, dark hair combed back, thick glasses -->
+  <ellipse cx="73" cy="116" rx="16" ry="17" fill="#b87848"/>
+  <!-- dark hair -->
+  <ellipse cx="73" cy="101" rx="15" ry="8" fill="#0a0808"/>
+  <rect x="58" y="101" width="30" height="9" fill="#0a0808"/>
+  <ellipse cx="60" cy="110" rx="4" ry="6" fill="#b87848"/><!-- entry left -->
+  <ellipse cx="86" cy="110" rx="4" ry="6" fill="#b87848"/><!-- entry right -->
+  <!-- brows thick -->
+  <path d="M62 110 Q67 107 73 109" fill="none" stroke="#050305" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M73 109 Q79 107 84 110" fill="none" stroke="#050305" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- THICK DARK GLASSES -->
+  <rect x="60" y="113" width="13" height="9" rx="4" fill="none" stroke="#080808" stroke-width="2.5"/>
+  <rect x="75" y="113" width="13" height="9" rx="4" fill="none" stroke="#080808" stroke-width="2.5"/>
+  <line x1="73" y1="117" x2="75" y2="117" stroke="#080808" stroke-width="2"/>
+  <!-- eyes behind glasses -->
+  <circle cx="67" cy="117" r="2.5" fill="#2a1808"/>
+  <circle cx="81" cy="117" r="2.5" fill="#2a1808"/>
+  <circle cx="67.8" cy="116.2" r=".7" fill="#fff" opacity=".7"/>
+  <circle cx="81.8" cy="116.2" r=".7" fill="#fff" opacity=".7"/>
+  <!-- nose broad -->
+  <path d="M71 122 Q73 126 75 122" fill="none" stroke="#9a6838" stroke-width="1.5"/>
+  <ellipse cx="70" cy="125" rx="2.5" ry="1.8" fill="#a06030"/>
+  <ellipse cx="76" cy="125" rx="2.5" ry="1.8" fill="#a06030"/>
+  <!-- mouth authoritative -->
+  <path d="M64 130 Q73 134 82 130" fill="#7a4028" stroke-width=".5"/>
+  <!-- ears -->
+  <ellipse cx="57" cy="117" rx="3" ry="4.5" fill="#a87040"/>
+  <ellipse cx="89" cy="117" rx="3" ry="4.5" fill="#a87040"/>
+  <!-- Warm amber light -->
+  <rect x="0" y="0" width="200" height="240" fill="#f5a623" opacity=".03"/>
+</svg>`,
+
+  /* ─── PARLEBAS — terrain de jeu collectif, jugadores interactuando ─── */
+  pb:`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="pb-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#080818"/><stop offset="100%" stop-color="#0d0d2a"/></linearGradient></defs>
+  <rect width="200" height="240" fill="url(#pb-bg)"/>
+  <!-- Field surface -->
+  <rect x="0" y="130" width="200" height="110" fill="#080c18"/>
+  <!-- Field lines -->
+  <rect x="10" y="140" width="180" height="90" rx="4" fill="none" stroke="#7c72e8" stroke-width="1" opacity=".4"/>
+  <!-- center circle -->
+  <ellipse cx="100" cy="185" rx="30" ry="18" fill="none" stroke="#7c72e8" stroke-width=".8" opacity=".35"/>
+  <!-- center spot -->
+  <circle cx="100" cy="185" r="2.5" fill="#7c72e8" opacity=".5"/>
+  <!-- penalty areas -->
+  <rect x="30" y="160" width="50" height="40" rx="2" fill="none" stroke="#7c72e8" stroke-width=".7" opacity=".25"/>
+  <rect x="120" y="160" width="50" height="40" rx="2" fill="none" stroke="#7c72e8" stroke-width=".7" opacity=".25"/>
+  <!-- goal posts -->
+  <rect x="40" y="155" width="30" height="3" rx="1" fill="#7c72e8" opacity=".5"/>
+  <rect x="40" y="155" width="2" height="12" fill="#7c72e8" opacity=".5"/>
+  <rect x="68" y="155" width="2" height="12" fill="#7c72e8" opacity=".5"/>
+  <rect x="130" y="155" width="30" height="3" rx="1" fill="#7c72e8" opacity=".5"/>
+  <rect x="130" y="155" width="2" height="12" fill="#7c72e8" opacity=".5"/>
+  <rect x="158" y="155" width="2" height="12" fill="#7c72e8" opacity=".5"/>
+  <!-- Sky gradient glow -->
+  <ellipse cx="100" cy="0" rx="80" ry="40" fill="#7c72e8" opacity=".06"/>
+  <!-- Tactical arrows on field -->
+  <path d="M35 200 Q60 180 85 190" fill="none" stroke="#7c72e8" stroke-width="1" stroke-dasharray="4 3" opacity=".4" marker-end="url(#arr-pb)"/>
+  <path d="M165 200 Q140 178 118 188" fill="none" stroke="#7c72e8" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+  <path d="M100 220 Q100 200 100 185" fill="none" stroke="#7c72e8" stroke-width="1" stroke-dasharray="4 3" opacity=".35"/>
+  <!-- PLAYERS INTERACTING in background — 6 players -->
+  <!-- Player A runs left with ball -->
+  <ellipse cx="38" cy="162" rx="6" ry="7" fill="#8a8ad8"/>
+  <rect x="34" y="169" width="5" height="14" rx="2" fill="#4a4a98"/>
+  <rect x="40" y="169" width="5" height="14" rx="2" fill="#4a4a98"/>
+  <!-- leaning forward run -->
+  <path d="M32 172 Q24 176 20 182" fill="none" stroke="#8a8ad8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M46 172 Q50 168 54 172" fill="none" stroke="#8a8ad8" stroke-width="4" stroke-linecap="round"/>
+  <!-- ball -->
+  <circle cx="56" cy="174" r="4" fill="#c8c8d8" stroke="#8a8ad8" stroke-width=".8"/>
+  <!-- Player B intercepts right -->
+  <ellipse cx="160" cy="158" rx="6" ry="7" fill="#d8a8d8"/>
+  <rect x="156" y="165" width="5" height="14" rx="2" fill="#885888"/>
+  <rect x="162" y="165" width="5" height="14" rx="2" fill="#885888"/>
+  <path d="M154 168 Q148 172 145 180" fill="none" stroke="#d8a8d8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M168 168 Q174 165 178 168" fill="none" stroke="#d8a8d8" stroke-width="4" stroke-linecap="round"/>
+  <!-- Player C goalkeeper left -->
+  <ellipse cx="22" cy="175" rx="5" ry="6" fill="#a8d8a8"/>
+  <rect x="19" y="181" width="4" height="12" rx="2" fill="#488848"/>
+  <rect x="24" y="181" width="4" height="12" rx="2" fill="#488848"/>
+  <!-- Player D right mid -->
+  <ellipse cx="140" cy="178" rx="5" ry="6" fill="#d8c8a8"/>
+  <rect x="137" y="184" width="4" height="12" rx="2" fill="#886838"/>
+  <rect x="142" y="184" width="4" height="12" rx="2" fill="#886838"/>
+  <!-- Player E back left -->
+  <ellipse cx="68" cy="208" rx="5" ry="6" fill="#a8c8e8"/>
+  <rect x="65" y="214" width="4" height="10" rx="2" fill="#386888"/>
+  <rect x="70" y="214" width="4" height="10" rx="2" fill="#386888"/>
+  <!-- Player F back right -->
+  <ellipse cx="132" cy="208" rx="5" ry="6" fill="#e8a8a8"/>
+  <rect x="129" y="214" width="4" height="10" rx="2" fill="#884848"/>
+  <rect x="134" y="214" width="4" height="10" rx="2" fill="#884848"/>
+  <!-- Sigma notation floating -->
+  <text x="8" y="25" font-size="22" fill="#7c72e8" opacity=".18" font-family="serif" font-style="italic">σ(M)</text>
+  <!-- Praxiology formula -->
+  <text x="140" y="30" font-size="10" fill="#7c72e8" opacity=".2" font-family="monospace">C.M → S</text>
+  <text x="145" y="45" font-size="9" fill="#7c72e8" opacity=".15" font-family="monospace">L.I ∩ L.E</text>
+  <!-- Scoreboard top -->
+  <rect x="60" y="5" width="80" height="30" rx="4" fill="#0d0d22" stroke="#7c72e8" stroke-width=".8" opacity=".6"/>
+  <text x="100" y="16" text-anchor="middle" font-size="8" fill="#7c72e8" opacity=".7" font-family="monospace">PRAXIOLOGÍA</text>
+  <text x="100" y="28" text-anchor="middle" font-size="10" fill="#fff" opacity=".5" font-family="monospace">2 : 1</text>
+  <!-- PARLEBAS FIGURE — foreground right, distinguished elderly white hair, focused -->
+  <!-- Shadow -->
+  <ellipse cx="145" cy="232" rx="16" ry="4" fill="#000" opacity=".35"/>
+  <!-- Legs -->
+  <rect x="137" y="204" width="7" height="28" rx="3" fill="#0a0a18"/>
+  <rect x="146" y="204" width="7" height="28" rx="3" fill="#0a0a18"/>
+  <!-- Blazer body dark -->
+  <rect x="128" y="165" width="36" height="42" rx="6" fill="#111118"/>
+  <!-- lapels -->
+  <polygon points="144,165 133,178 142,174" fill="#0a0a12"/>
+  <polygon points="148,165 159,178 150,174" fill="#0a0a12"/>
+  <!-- burgundy tie -->
+  <polygon points="143,167 149,167 147,198 145,198" fill="#6a1020"/>
+  <rect x="142" y="165" width="8" height="7" rx="2" fill="#7a1828"/>
+  <!-- arm with clipboard/notepad -->
+  <path d="M128 172 Q116 178 110 188" fill="none" stroke="#111118" stroke-width="9" stroke-linecap="round"/>
+  <path d="M128 172 Q116 178 110 188" fill="none" stroke="#ddd8c0" stroke-width="6" stroke-linecap="round"/>
+  <!-- clipboard -->
+  <rect x="102" y="185" width="14" height="18" rx="2" fill="#c8c0a8"/>
+  <rect x="106" y="183" width="6" height="4" rx="1" fill="#8a8078"/>
+  <line x1="104" y1="191" x2="114" y2="191" stroke="#888070" stroke-width=".8"/>
+  <line x1="104" y1="195" x2="114" y2="195" stroke="#888070" stroke-width=".8"/>
+  <line x1="104" y1="199" x2="110" y2="199" stroke="#888070" stroke-width=".8"/>
+  <!-- other arm pockets -->
+  <path d="M164 172 Q170 182 168 192" fill="none" stroke="#111118" stroke-width="8" stroke-linecap="round"/>
+  <!-- Neck thin -->
+  <rect x="140" y="153" width="8" height="14" rx="3" fill="#d4b890"/>
+  <!-- HEAD — thin angular, white hair abundant swept back -->
+  <ellipse cx="144" cy="142" rx="14" ry="16" fill="#d4b890"/>
+  <!-- abundant white hair swept back -->
+  <ellipse cx="144" cy="128" rx="15" ry="9" fill="#e8e8f0"/>
+  <rect x="129" y="128" width="30" height="10" fill="#e0e0ea"/>
+  <ellipse cx="130" cy="136" rx="4" ry="8" fill="#dcdce8"/><!-- vol left -->
+  <ellipse cx="158" cy="136" rx="4" ry="8" fill="#dcdce8"/><!-- vol right -->
+  <!-- hair wave lines -->
+  <path d="M132 130 Q144 125 156 130" fill="none" stroke="#c8c8d8" stroke-width="1" opacity=".7"/>
+  <path d="M130 134 Q144 129 158 134" fill="none" stroke="#c8c8d8" stroke-width=".8" opacity=".5"/>
+  <!-- brows white/grey thin -->
+  <path d="M134 137 Q139 135 144 137" fill="none" stroke="#a0a0b8" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M144 137 Q149 135 154 137" fill="none" stroke="#a0a0b8" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- WIRE RIM GLASSES -->
+  <rect x="131" y="139" width="10" height="7" rx="3.5" fill="none" stroke="#7c72e8" stroke-width=".9"/>
+  <rect x="143" y="139" width="10" height="7" rx="3.5" fill="none" stroke="#7c72e8" stroke-width=".9"/>
+  <line x1="141" y1="142" x2="143" y2="142" stroke="#7c72e8" stroke-width=".9"/>
+  <line x1="131" y1="142" x2="126" y2="143" stroke="#7c72e8" stroke-width=".9"/>
+  <line x1="153" y1="142" x2="158" y2="143" stroke="#7c72e8" stroke-width=".9"/>
+  <!-- eyes serene -->
+  <circle cx="136" cy="142" r="2.2" fill="#2a2848"/>
+  <circle cx="148" cy="142" r="2.2" fill="#2a2848"/>
+  <circle cx="136.7" cy="141.3" r=".6" fill="#fff"/>
+  <circle cx="148.7" cy="141.3" r=".6" fill="#fff"/>
+  <!-- nose thin angular -->
+  <path d="M142 148 L141 154 Q144 156 147 154 L146 148" fill="#c0a070" opacity=".7"/>
+  <!-- mouth calm smile -->
+  <path d="M138 158 Q144 162 150 158" fill="none" stroke="#9a7858" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- wrinkle lines age -->
+  <path d="M130 145 Q128 150 130 155" fill="none" stroke="#c0a878" stroke-width=".6" opacity=".4"/>
+  <path d="M158 145 Q160 150 158 155" fill="none" stroke="#c0a878" stroke-width=".6" opacity=".4"/>
+  <!-- ears thin -->
+  <ellipse cx="130" cy="143" rx="3" ry="4.5" fill="#cca870"/>
+  <ellipse cx="158" cy="143" rx="3" ry="4.5" fill="#cca870"/>
+  <!-- purple ambient tint -->
+  <rect x="0" y="0" width="200" height="240" fill="#7c72e8" opacity=".025"/>
+</svg>`,
+
+  /* ─── MANUEL SERGIO — fondo espiritual multidimensional, hippie/cósmico ─── */
+  ms:`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ms-cosmos" cx="50%" cy="45%" r="60%"><stop offset="0%" stop-color="#1a0828"/><stop offset="50%" stop-color="#0d0518"/><stop offset="100%" stop-color="#050208"/></radialGradient>
+    <radialGradient id="ms-aura" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#9040e0" stop-opacity=".25"/><stop offset="100%" stop-color="#9040e0" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- Cosmic background -->
+  <rect width="200" height="240" fill="url(#ms-cosmos)"/>
+  <!-- Stars scattered -->
+  <circle cx="15" cy="12" r="1" fill="#fff" opacity=".7"/>
+  <circle cx="38" cy="8" r="1.2" fill="#fff" opacity=".6"/>
+  <circle cx="62" cy="18" r=".8" fill="#fff" opacity=".8"/>
+  <circle cx="88" cy="5" r="1" fill="#fff" opacity=".5"/>
+  <circle cx="115" cy="14" r="1.2" fill="#fff" opacity=".7"/>
+  <circle cx="140" cy="7" r=".9" fill="#fff" opacity=".6"/>
+  <circle cx="165" cy="20" r="1.1" fill="#fff" opacity=".8"/>
+  <circle cx="185" cy="10" r=".8" fill="#fff" opacity=".5"/>
+  <circle cx="8" cy="42" r=".9" fill="#c0a0ff" opacity=".6"/>
+  <circle cx="30" cy="55" r=".7" fill="#ffd0a0" opacity=".5"/>
+  <circle cx="175" cy="40" r="1" fill="#c0a0ff" opacity=".7"/>
+  <circle cx="192" cy="60" r=".8" fill="#fff" opacity=".4"/>
+  <!-- Nebula clouds -->
+  <ellipse cx="30" cy="40" rx="25" ry="15" fill="#6020a0" opacity=".12"/>
+  <ellipse cx="160" cy="35" rx="30" ry="12" fill="#4020c0" opacity=".1"/>
+  <ellipse cx="100" cy="20" rx="40" ry="10" fill="#a040c0" opacity=".08"/>
+  <!-- CONCENTRIC RINGS / sacred geometry -->
+  <circle cx="100" cy="110" r="85" fill="none" stroke="#9040e0" stroke-width=".5" opacity=".2"/>
+  <circle cx="100" cy="110" r="70" fill="none" stroke="#9040e0" stroke-width=".4" opacity=".18"/>
+  <circle cx="100" cy="110" r="55" fill="none" stroke="#c060ff" stroke-width=".5" opacity=".15"/>
+  <circle cx="100" cy="110" r="40" fill="none" stroke="#c060ff" stroke-width=".4" opacity=".2"/>
+  <!-- Sacred geometry star -->
+  <polygon points="100,35 107,56 130,56 112,69 119,90 100,77 81,90 88,69 70,56 93,56" fill="none" stroke="#ffd060" stroke-width=".7" opacity=".25"/>
+  <polygon points="100,50 104,62 118,62 107,70 111,82 100,75 89,82 93,70 82,62 96,62" fill="none" stroke="#ffd060" stroke-width=".5" opacity=".2"/>
+  <!-- PHI symbol large background -->
+  <text x="100" y="95" text-anchor="middle" font-size="55" fill="#9040e0" opacity=".08" font-family="serif" font-style="italic">φ</text>
+  <!-- OM / AUM symbol -->
+  <text x="158" y="75" text-anchor="middle" font-size="20" fill="#ffd060" opacity=".15" font-family="serif">ॐ</text>
+  <!-- CHAKRA dots column center -->
+  <circle cx="100" cy="225" r="4" fill="#e05530" opacity=".5"/>
+  <circle cx="100" cy="215" r="4" fill="#e07020" opacity=".5"/>
+  <circle cx="100" cy="205" r="4" fill="#f0c020" opacity=".45"/>
+  <circle cx="100" cy="196" r="4" fill="#40b040" opacity=".45"/>
+  <circle cx="100" cy="188" r="4" fill="#4080e0" opacity=".45"/>
+  <circle cx="100" cy="180" r="4" fill="#6040d0" opacity=".45"/>
+  <circle cx="100" cy="172" r="4.5" fill="#9040c0" opacity=".4"/>
+  <!-- Aura glow around figure area -->
+  <ellipse cx="75" cy="155" rx="45" ry="55" fill="url(#ms-aura)"/>
+  <!-- Lotus petals background faint -->
+  <g opacity=".12" fill="#c060ff">
+    <ellipse cx="100" cy="140" rx="8" ry="20" transform="rotate(0 100 160)"/>
+    <ellipse cx="100" cy="140" rx="8" ry="20" transform="rotate(45 100 160)"/>
+    <ellipse cx="100" cy="140" rx="8" ry="20" transform="rotate(90 100 160)"/>
+    <ellipse cx="100" cy="140" rx="8" ry="20" transform="rotate(135 100 160)"/>
+  </g>
+  <!-- Rainbow arc subtle -->
+  <path d="M5 230 Q100 120 195 230" fill="none" stroke="#ff6060" stroke-width="1.5" opacity=".08"/>
+  <path d="M10 230 Q100 128 190 230" fill="none" stroke="#ff9020" stroke-width="1.5" opacity=".08"/>
+  <path d="M15 230 Q100 135 185 230" fill="none" stroke="#f0f020" stroke-width="1.5" opacity=".07"/>
+  <path d="M20 230 Q100 142 180 230" fill="none" stroke="#40c040" stroke-width="1.5" opacity=".07"/>
+  <path d="M25 230 Q100 148 175 230" fill="none" stroke="#4080ff" stroke-width="1.5" opacity=".07"/>
+  <path d="M30 230 Q100 154 170 230" fill="none" stroke="#9040e0" stroke-width="1.5" opacity=".07"/>
+  <!-- FIGURES in background — spiritual gathering, hippie silhouettes -->
+  <!-- Meditating figure left -->
+  <ellipse cx="22" cy="172" rx="7" ry="7" fill="#6030a0" opacity=".5"/>
+  <ellipse cx="22" cy="185" rx="12" ry="6" fill="#4820a0" opacity=".4"/><!-- lotus seat -->
+  <!-- arms crossed meditation -->
+  <path d="M12 180 Q22 177 32 180" fill="none" stroke="#6030a0" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+  <!-- Raised arms figure right -->
+  <ellipse cx="178" cy="168" rx="7" ry="7" fill="#c060e0" opacity=".4"/>
+  <rect x="174" y="175" width="8" height="20" rx="3" fill="#8030c0" opacity=".4"/>
+  <path d="M170 175 Q160 162 158 155" fill="none" stroke="#c060e0" stroke-width="4" stroke-linecap="round" opacity=".4"/>
+  <path d="M186 175 Q196 162 198 155" fill="none" stroke="#c060e0" stroke-width="4" stroke-linecap="round" opacity=".4"/>
+  <!-- Figure with flower right far -->
+  <ellipse cx="168" cy="198" rx="5" ry="6" fill="#e0a040" opacity=".4"/>
+  <rect x="165" y="204" width="5" height="15" rx="2" fill="#c08020" opacity=".4"/>
+  <!-- MANUEL SERGIO FIGURE — foreground, warm smile, bald, thin metal glasses, hand on chin -->
+  <!-- Shadow -->
+  <ellipse cx="75" cy="232" rx="18" ry="5" fill="#000" opacity=".4"/>
+  <!-- Legs -->
+  <rect x="66" y="202" width="8" height="30" rx="3" fill="#1a1a28"/>
+  <rect x="76" y="202" width="8" height="30" rx="3" fill="#1a1a28"/>
+  <!-- Suit with purple tie -->
+  <rect x="55" y="162" width="40" height="44" rx="6" fill="#1e1e2a"/>
+  <!-- lapels -->
+  <polygon points="73,162 60,175 70,171" fill="#161620"/>
+  <polygon points="77,162 90,175 80,171" fill="#161620"/>
+  <!-- PURPLE TIE very characteristic -->
+  <polygon points="72,164 78,164 76,196 74,196" fill="#6030a0"/>
+  <rect x="71" y="162" width="8" height="7" rx="2" fill="#7040b0"/>
+  <!-- tie stripe -->
+  <line x1="73" y1="168" x2="77" y2="168" stroke="#9060c0" stroke-width=".7" opacity=".6"/>
+  <line x1="73" y1="174" x2="77" y2="174" stroke="#9060c0" stroke-width=".7" opacity=".6"/>
+  <!-- Hand raised to chin — characteristic pose -->
+  <path d="M55 170 Q44 178 40 190" fill="none" stroke="#1e1e2a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M55 170 Q44 178 40 190" fill="none" stroke="#c09868" stroke-width="6" stroke-linecap="round"/>
+  <!-- hand on chin -->
+  <ellipse cx="40" cy="192" rx="8" ry="7" fill="#c09868"/>
+  <!-- index finger pointing up to chin -->
+  <path d="M39 188 Q40 180 40 174" fill="none" stroke="#c09868" stroke-width="4" stroke-linecap="round"/>
+  <!-- RING on finger — very characteristic -->
+  <circle cx="40" cy="176" r="3" fill="none" stroke="#c8a030" stroke-width="1.2"/>
+  <!-- other arm natural -->
+  <path d="M95 170 Q104 180 103 192" fill="none" stroke="#1e1e2a" stroke-width="8" stroke-linecap="round"/>
+  <!-- Neck -->
+  <rect x="68" y="150" width="10" height="14" rx="3" fill="#d4a880"/>
+  <!-- HEAD — bald shiny, round, chubby cheeks, warm smile, thin metal glasses -->
+  <ellipse cx="73" cy="137" rx="17" ry="18" fill="#c89868"/>
+  <!-- total baldness — subtle shine -->
+  <ellipse cx="66" cy="125" rx="9" ry="4" fill="#e0b888" opacity=".22"/>
+  <!-- very slight hair at sides only -->
+  <path d="M56" cy="138" fill="none"/>
+  <ellipse cx="57" cy="144" rx="3" ry="6" fill="#4a2808" opacity=".3"/>
+  <ellipse cx="89" cy="144" rx="3" ry="6" fill="#4a2808" opacity=".3"/>
+  <!-- CHUBBY CHEEKS pronounced -->
+  <ellipse cx="58" cy="142" rx="9" ry="8" fill="#d0a070" opacity=".22"/>
+  <ellipse cx="88" cy="142" rx="9" ry="8" fill="#d0a070" opacity=".22"/>
+  <!-- brows arched warm -->
+  <path d="M62 130 Q67 127 73 129" fill="none" stroke="#3a1a08" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M73 129 Q79 127 84 130" fill="none" stroke="#3a1a08" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- THIN METAL GLASSES — very characteristic -->
+  <rect x="59" y="132" width="12" height="9" rx="4.5" fill="none" stroke="#a09080" stroke-width="1"/>
+  <rect x="73" y="132" width="12" height="9" rx="4.5" fill="none" stroke="#a09080" stroke-width="1"/>
+  <line x1="71" y1="136" x2="73" y2="136" stroke="#a09080" stroke-width="1"/>
+  <line x1="59" y1="136" x2="54" y2="137" stroke="#a09080" stroke-width=".9"/>
+  <line x1="85" y1="136" x2="90" y2="137" stroke="#a09080" stroke-width=".9"/>
+  <!-- lens reflection subtle -->
+  <ellipse cx="65" cy="136" rx="4.5" ry="3" fill="#d8e8f8" opacity=".15"/>
+  <ellipse cx="79" cy="136" rx="4.5" ry="3" fill="#d8e8f8" opacity=".15"/>
+  <!-- eyes warm kind -->
+  <circle cx="65" cy="136" r="2.6" fill="#2a1808"/>
+  <circle cx="79" cy="136" r="2.6" fill="#2a1808"/>
+  <circle cx="65.8" cy="135.2" r=".8" fill="#fff" opacity=".85"/>
+  <circle cx="79.8" cy="135.2" r=".8" fill="#fff" opacity=".85"/>
+  <!-- eyes slightly squinting from smile -->
+  <path d="M61 133 Q65 131 69 133" fill="none" stroke="#a07840" stroke-width=".6" opacity=".5"/>
+  <path d="M75 133 Q79 131 83 133" fill="none" stroke="#a07840" stroke-width=".6" opacity=".5"/>
+  <!-- nose round bulbous -->
+  <ellipse cx="73" cy="143" rx="5" ry="4" fill="#b88050" opacity=".6"/>
+  <ellipse cx="70" cy="145" rx="3" ry="2" fill="#a87040"/>
+  <ellipse cx="76" cy="145" rx="3" ry="2" fill="#a87040"/>
+  <!-- WIDE WARM SMILE — very characteristic -->
+  <path d="M60 152 Q73 163 86 152" fill="#8a4830" stroke="#7a3820" stroke-width=".5"/>
+  <path d="M61 152 Q73 160 85 152" fill="none" stroke="#c07858" stroke-width="1.5"/>
+  <!-- teeth -->
+  <rect x="65" y="151" width="16" height="5" rx="2.5" fill="#f0ece0" opacity=".9"/>
+  <!-- smile wrinkles -->
+  <path d="M58 148 Q56 152 58 157" fill="none" stroke="#b08060" stroke-width=".8" opacity=".5"/>
+  <path d="M88 148 Q90 152 88 157" fill="none" stroke="#b08060" stroke-width=".8" opacity=".5"/>
+  <!-- ears round -->
+  <ellipse cx="56" cy="138" rx="4" ry="5.5" fill="#c09060"/>
+  <path d="M57 134 Q55 138 57 142" fill="none" stroke="#a07840" stroke-width=".8"/>
+  <ellipse cx="90" cy="138" rx="4" ry="5.5" fill="#c09060"/>
+  <!-- cosmic purple overlay -->
+  <rect x="0" y="0" width="200" height="240" fill="#9040e0" opacity=".03"/>
+</svg>`,
+};
+const MINI={
+  lb:`<svg viewBox="0 0 22 26" xmlns="http://www.w3.org/2000/svg"><ellipse cx="11" cy="12" rx="9" ry="10" fill="#c8855a"/><ellipse cx="11" cy="4" rx="9" ry="3" fill="#b07040" opacity=".3"/><ellipse cx="7" cy="12" rx="2" ry="2" fill="#fff"/><ellipse cx="15" cy="12" rx="2" ry="2" fill="#fff"/><circle cx="7" cy="12.5" r="1.3" fill="#3a2010"/><circle cx="15" cy="12.5" r="1.3" fill="#3a2010"/><path d="M7 18 Q11 21 15 18" fill="none" stroke="#9a5030" stroke-width="1.2"/></svg>`,
+  cg:`<svg viewBox="0 0 22 26" xmlns="http://www.w3.org/2000/svg"><ellipse cx="11" cy="12" rx="9" ry="10" fill="#b87848"/><rect x="2" y="4" width="18" height="6" rx="2" fill="#0a0808"/><rect x="4" y="9" width="5.5" height="5" rx="2.5" fill="none" stroke="#0a0808" stroke-width="2"/><rect x="12.5" y="9" width="5.5" height="5" rx="2.5" fill="none" stroke="#0a0808" stroke-width="2"/><line x1="9.5" y1="11.5" x2="12.5" y2="11.5" stroke="#0a0808" stroke-width="1.8"/><path d="M6 18 Q11 21 16 18" fill="none" stroke="#9a6838" stroke-width="1.2"/></svg>`,
+  pb:`<svg viewBox="0 0 22 26" xmlns="http://www.w3.org/2000/svg"><ellipse cx="11" cy="12" rx="9" ry="10" fill="#d4b890"/><ellipse cx="11" cy="4" rx="9" ry="5" fill="#e0e0ea"/><ellipse cx="4" cy="9" rx="2" ry="5" fill="#dcdce8"/><ellipse cx="18" cy="9" rx="2" ry="5" fill="#dcdce8"/><ellipse cx="7.5" cy="12" rx="2.5" ry="2" fill="#fff"/><ellipse cx="14.5" cy="12" rx="2.5" ry="2" fill="#fff"/><circle cx="7.5" cy="12.5" r="1.3" fill="#2a2848"/><circle cx="14.5" cy="12.5" r="1.3" fill="#2a2848"/><path d="M7 18 Q11 20 15 18" fill="none" stroke="#9a7858" stroke-width="1.2"/></svg>`,
+  ms:`<svg viewBox="0 0 22 26" xmlns="http://www.w3.org/2000/svg"><ellipse cx="11" cy="12" rx="9" ry="10" fill="#c89868"/><ellipse cx="11" cy="4" rx="8" ry="3" fill="#c08858" opacity=".2"/><rect x="4" y="9" width="5" height="4" rx="2" fill="none" stroke="#b0a090" stroke-width="1"/><rect x="13" y="9" width="5" height="4" rx="2" fill="none" stroke="#b0a090" stroke-width="1"/><line x1="9" y1="11" x2="13" y2="11" stroke="#b0a090" stroke-width="1"/><circle cx="6.5" cy="11" r="1.2" fill="#2a1808"/><circle cx="15.5" cy="11" r="1.2" fill="#2a1808"/><path d="M6 18 Q11 22 16 18" fill="#8a4830"/></svg>`,
+};
+
+// ═══════════════════════════════════════════
+// GAME DATA
+// ═══════════════════════════════════════════
+const CHARS={
+  lb:{id:'lb',name:'Le Boulch',full:'Jean Le Boulch',theory:'Psicokinética',
+    color:'lb',stats:[{v:92,k:'Ciencia'},{v:88,k:'Método'},{v:85,k:'Práctica'}]},
+  cg:{id:'cg',name:'Cagigal',full:'José M. Cagigal',theory:'Deporte educativo',
+    color:'cg',stats:[{v:88,k:'Valores'},{v:95,k:'Deporte'},{v:80,k:'Teoría'}]},
+  pb:{id:'pb',name:'Parlebas',full:'Pierre Parlebas',theory:'Praxiología motriz',
+    color:'pb',stats:[{v:98,k:'Rigor'},{v:90,k:'Ciencia'},{v:72,k:'Práctica'}]},
+  ms:{id:'ms',name:'Sergio',full:'Manuel Sergio',theory:'Motricidad humana',
+    color:'ms',stats:[{v:95,k:'Ruptura'},{v:85,k:'Filosofía'},{v:88,k:'Visión'}]},
+};
+
+// WEAKNESSES: for each author, debilidades reales que los otros pueden atacar
+const WEAKNESSES={
+  lb:[
+    {id:'w1',label:'Reduccionismo individual',text:'La psicokinética se centra en el individuo aislado, ignorando la dimensión social y colectiva de la conducta motriz.'},
+    {id:'w2',label:'Énfasis en la infancia',text:'El método psicokinético fue diseñado para la infancia y no ofrece respuestas claras para la EF en la adolescencia y la edad adulta.'},
+    {id:'w3',label:'Base empírica limitada',text:'El método se apoya más en la fenomenología que en evidencia experimental sistemática. La observación externa es insuficiente.'},
+    {id:'w4',label:'Ausencia de lo social',text:'Ignora la comunicación motriz entre sujetos: el movimiento no ocurre en el vacío, siempre hay un contexto social y cultural.'},
+  ],
+  cg:[
+    {id:'w1',label:'Falta de objeto científico',text:'El deporte educativo carece de un objeto de estudio científico preciso. Confunde movimiento con conducta motriz sin definir claramente su campo.'},
+    {id:'w2',label:'Valores sin base empírica',text:'Los valores deportivos que Cagigal propone (voluntad, carácter, intrepidez) no tienen demostración empírica rigurosa de su transferencia a la vida cotidiana.'},
+    {id:'w3',label:'Confusión con espectáculo',text:'La distinción entre "deporte-praxis" y "deporte-espectáculo" es teórica pero en la práctica escolar es difícil de sostener cuando el deporte mediático domina el imaginario.'},
+    {id:'w4',label:'Dualismo residual',text:'Aunque critica el dualismo, su modelo sigue anclado en una visión cartesiana del cuerpo que no supera completamente la separación mente-cuerpo.'},
+  ],
+  pb:[
+    {id:'w1',label:'Exceso de formalismo',text:'La Praxiología motriz privilegia la dimensión lógico-formal por encima de la experiencia vivida del practicante. El jugador queda reducido a un operador del sistema.'},
+    {id:'w2',label:'Descuido del sujeto',text:'Al concentrarse en la lógica interna, Parlebas descuida la dimensión subjetiva, emocional y fenomenológica de quien se mueve.'},
+    {id:'w3',label:'Complejidad de aplicación',text:'El léxico de praxiología es tan técnico y específico que los docentes de EF en campo encuentran difícil aplicarlo sin formación especializada.'},
+    {id:'w4',label:'Reducción sociomotriz',text:'Privilegia la motricidad de relación (sociomotricidad) sobre las prácticas individuales, subestimando el valor de actividades como el yoga o la meditación motriz.'},
+  ],
+  ms:[
+    {id:'w1',label:'Ruptura sin continuidad',text:'Proponer un corte epistemológico total niega la validez acumulada de décadas de investigación en EF. La discontinuidad radical dificulta el diálogo con el campo existente.'},
+    {id:'w2',label:'Vaguedad conceptual',text:'La "Ciencia de la Motricidad Humana" es un concepto tan amplio que lo incluye todo (deporte, danza, ergonomía) sin definir claramente sus límites epistemológicos.'},
+    {id:'w3',label:'Aplicabilidad curricular',text:'La propuesta de crear Facultades de Motricidad Humana no ha tenido impacto curricular real en Latinoamérica. La distancia entre propuesta teórica y realidad institucional es enorme.'},
+    {id:'w4',label:'Influencia excesiva de Althusser',text:'Fundar una ciencia sobre el marxismo althusseriano y la fenomenología genera inconsistencias internas: dos marcos filosóficos con premisas contradictorias sobre el sujeto.'},
+  ],
+};
+
+// ARGUMENTS per author (for argue phase) — tagged with coherence
+const ARGS={
+  lb:[
+    {type:'spc',label:'★ Golpe maestro',text:'La psicokinética fundamenta la EF en el desarrollo psicomotor como unidad indisoluble: aprender a moverse es aprender a ser persona',pts:50,res:'spc',author:'lb',fb:'¡Coherencia perfecta! Este es el núcleo de la psicokinética: el movimiento como formador de la persona integral.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'El movimiento humano tiene importancia fundamental en el desarrollo autónomo de la persona en la vida social',pts:30,res:'hit',author:'lb',fb:'Argumento sólido y coherente con la psicokinética. La autonomía personal es el objetivo central de Le Boulch.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'La conducta motriz revela la personalidad completa del practicante en cada situación de juego',pts:15,res:'hit',author:'pb',fb:'Atención: este argumento pertenece a Parlebas, no a Le Boulch. Coherencia reducida con tu hermenéutica.',coh:'other'},
+    {type:'def',label:'◈ Defensa débil',text:'El deporte desarrolla valores como voluntad y carácter en los jóvenes colombianos',pts:-15,res:'miss',author:'cg',fb:'Incoherente: este argumento es de Cagigal, no de Le Boulch. Usarlo debilita gravemente tu posición teórica.',coh:'other'},
+  ],
+  cg:[
+    {type:'spc',label:'★ Golpe maestro',text:'El deporte-praxis es el gran educador: desarrolla voluntad, intrepidez, equilibrio y superación que no ofrece ninguna otra práctica corporal',pts:50,res:'spc',author:'cg',fb:'¡Coherencia perfecta! Este es el argumento central de Cagigal: el deporte como formador de valores humanos.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'La kinantropología reconoce al ser humano como corpus y mens: el deporte educa al homo deportivus en su totalidad',pts:30,res:'hit',author:'cg',fb:'Argumento sólido y coherente. La kinantropología es la propuesta científica de Cagigal para la EF.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'La unidad psicosomática se desarrolla a través del movimiento funcional desde la infancia',pts:12,res:'hit',author:'lb',fb:'Cuidado: este argumento es de Le Boulch. Puedes usarlo pero reduce la coherencia con el deporte educativo.',coh:'other'},
+    {type:'def',label:'◈ Defensa débil',text:'La EF necesita un corte epistemológico para separarse de la gimnasia y crear una nueva ciencia',pts:-15,res:'miss',author:'ms',fb:'Incoherente: este argumento es de Manuel Sergio. Usarlo contradice la postura de Cagigal sobre la EF.',coh:'other'},
+  ],
+  pb:[
+    {type:'spc',label:'★ Golpe maestro',text:'La conducta motriz —no el movimiento— es el objeto científico de la EF: revela la lógica interna de cada situación motriz y la personalidad del practicante',pts:50,res:'spc',author:'pb',fb:'¡Coherencia perfecta! Este es el núcleo de la Praxiología: la conducta motriz como objeto científico preciso.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'La sociomotricidad analiza los sistemas de comunicación y contracomunicación motriz en el juego colectivo',pts:30,res:'hit',author:'pb',fb:'Argumento sólido. La sociomotricidad es la dimensión más característica de la Praxiología motriz.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'El movimiento tiene importancia fundamental en el desarrollo autónomo de la persona',pts:12,res:'hit',author:'lb',fb:'Argumento de Le Boulch, no de Parlebas. La coherencia se reduce: Parlebas critica precisamente este enfoque.',coh:'other'},
+    {type:'def',label:'◈ Defensa débil',text:'Necesitamos una nueva ciencia que supere a la EF como paradigma obsoleto',pts:-15,res:'miss',author:'ms',fb:'Incoherente: esto es Sergio. Parlebas no propone eliminar la EF sino fundamentarla científicamente.',coh:'other'},
+  ],
+  ms:[
+    {type:'spc',label:'★ Golpe maestro',text:'La Ciencia de la Motricidad Humana representa un corte epistemológico total: supera el dualismo cartesiano y abre la EF a todas las ciencias humanas',pts:50,res:'spc',author:'ms',fb:'¡Coherencia perfecta! Este es el argumento central de Sergio: el corte epistemológico como superación radical.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'La totalidad compleja (Morin) y la intencionalidad fenomenológica (Merleau-Ponty) fundan una nueva ciencia del ser en movimiento',pts:30,res:'hit',author:'ms',fb:'Argumento sólido y coherente. Los fundamentos filosóficos de Sergio son precisamente estos.',coh:'own'},
+    {type:'atk',label:'⚔ Argumento',text:'La lógica interna de las prácticas motrices permite clasificar científicamente el universo de actividades físicas',pts:12,res:'hit',author:'pb',fb:'Argumento de Parlebas. Puedes usarlo pero pierde coherencia con la Ciencia de la Motricidad Humana.',coh:'other'},
+    {type:'def',label:'◈ Defensa débil',text:'El deporte educa valores: voluntad, carácter e intrepidez en los jóvenes',pts:-15,res:'miss',author:'cg',fb:'Incoherente: este argumento es de Cagigal. Sergio propone superar este enfoque, no defenderlo.',coh:'other'},
+  ],
+};
+
+// DEFENSES against attacks
+const DEFENSES={
+  lb:[
+    {type:'spc',label:'★ Contraargumento',text:'La psicokinética no ignora lo social: trabaja la interacción en juegos cooperativos y el desarrollo de la autonomía personal en contexto social',pts:40,res:'spc',fb:'¡Defensa sólida! La psicokinética incluye la dimensión relacional desde el desarrollo de la persona.'},
+    {type:'atk',label:'⚔ Defensa',text:'El desarrollo psicomotor es la base de todo aprendizaje social: sin autonomía corporal no hay participación colectiva auténtica',pts:25,res:'hit',fb:'Defensa válida. La autonomía individual es condición para la participación social en Le Boulch.'},
+    {type:'def',label:'◈ Defensa débil',text:'Mi método ha sido aplicado en muchos países y tiene resultados comprobados',pts:-10,res:'miss',fb:'Defensa empírica sin sustento teórico. Debes responder con argumentos conceptuales, no con popularidad.'},
+  ],
+  cg:[
+    {type:'spc',label:'★ Contraargumento',text:'La fisiopedagogía ofrece una base científica propia: los valores deportivos son medibles a través de sus efectos en la conducta del sujeto',pts:40,res:'spc',fb:'¡Defensa sólida! Cagigal propuso la fisiopedagogía como ciencia específica del educador físico.'},
+    {type:'atk',label:'⚔ Defensa',text:'El deporte-praxis tiene objeto claro: el ser humano en movimiento como homo deportivus, sujeto de educación corporal e intelectual',pts:25,res:'hit',fb:'Defensa válida. La kinantropología sí delimita el campo de la EF en Cagigal.'},
+    {type:'def',label:'◈ Defensa débil',text:'El deporte es universal y todos lo entienden, eso ya es suficiente base',pts:-10,res:'miss',fb:'Argumento populista. La universalidad del deporte no es argumento científico. Cagigal mismo exigía más rigor.'},
+  ],
+  pb:[
+    {type:'spc',label:'★ Contraargumento',text:'El practicante no es reducido: la conducta motriz incluye su dimensión cognitiva, afectiva y relacional. El léxico es riguroso, no excluyente',pts:40,res:'spc',fb:'¡Defensa sólida! La conducta motriz en Parlebas integra todas las dimensiones del sujeto.'},
+    {type:'atk',label:'⚔ Defensa',text:'La lógica interna no elimina al sujeto: lo sitúa en un sistema de relaciones que revela su personalidad motriz en acción',pts:25,res:'hit',fb:'Defensa válida. El sistema praxiológico no niega al sujeto sino que lo contextualiza en la acción.'},
+    {type:'def',label:'◈ Defensa débil',text:'Cualquier teoría es compleja al principio, con práctica se entiende',pts:-10,res:'miss',fb:'Defensa insuficiente. Debes argumentar por qué el rigor es necesario, no minimizar la complejidad.'},
+  ],
+  ms:[
+    {type:'spc',label:'★ Contraargumento',text:'El corte epistemológico no niega lo anterior: lo supera dialécticamente. Sin ruptura no hay ciencia nueva; Bachelard y Kuhn así lo demuestran',pts:40,res:'spc',fb:'¡Defensa sólida! La idea de ruptura epistemológica es central en Bachelard y Kuhn, los fundamentos de Sergio.'},
+    {type:'atk',label:'⚔ Defensa',text:'La Ciencia de la Motricidad Humana ya tiene Facultades creadas en Portugal y Brasil: no es solo teoría, es realidad institucional',pts:25,res:'hit',fb:'Defensa válida. La Facultad de Motricidad Humana de Lisboa es evidencia concreta.'},
+    {type:'def',label:'◈ Defensa débil',text:'Mi propuesta es la más moderna, por eso es incomprendida',pts:-10,res:'miss',fb:'Argumento de autoridad sin sustancia. La modernidad no garantiza la validez científica.'},
+  ],
+};
+
+const SCENARIOS=[
+  {tag:'Escenario 1',q:'Un colegio público de Medellín tiene 45 estudiantes por clase y sin cancha cubierta. El rector pregunta: ¿para qué sirve la EF más allá de "hacer ejercicio"?'},
+  {tag:'Escenario 2',q:'El Ministerio propone reducir la EF a 2 horas semanales y fusionarla con "recreación". Debes defenderla ante el Comité Técnico Nacional.'},
+  {tag:'Escenario 3',q:'Dos estudiantes discuten: uno dice que el fútbol es lo único válido en EF, el otro prefiere yoga y expresión corporal. ¿Cómo responde tu hermenéutica?'},
+  {tag:'Escenario 4',q:'El Ministerio evalúa qué hermenéutica debe guiar el currículo nacional de EF en Colombia. Tienes 2 minutos para convencer al jurado.'},
+  {tag:'Escenario 5',q:'Ronda final. El jurado pregunta: ¿cuál es la debilidad más seria de tu propia hermenéutica y cómo la superas?'},
+];
+
+const REFLECTIONS={
+  lb:'Le Boulch abandonó la EF oficial porque los programas los hacían políticos, no educadores. Su frustración se convirtió en la psicokinética. En Colombia esa tensión sigue viva.',
+  cg:'Cagigal distinguió el "deporte-praxis" del "deporte-espectáculo". Esa distinción sigue siendo clave para entender qué EF queremos en los colegios colombianos.',
+  pb:'Parlebas confesó que no sabía responder bien a sus estudiantes. Esa honestidad lo llevó a crear la Praxiología. A veces no saber es el inicio real del conocimiento.',
+  ms:'Sergio propuso un "corte epistemológico" total: no reformar la EF sino crear una nueva ciencia. Radical, pero eso es lo que hace avanzar los campos del saber.',
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let myId='p_'+Math.random().toString(36).slice(2,8);
+let myName='',myChar='',roomCode='',isHost=false;
+let myScore=0,myLog=[];
+let selCreate='',selJoin='';
+let pollT=null;
+let gameState=null; // synced game state
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',i===(t==='create'?0:1)));
+  document.getElementById('tab-create').style.display=t==='create'?'':'none';
+  document.getElementById('tab-join').style.display=t==='join'?'':'none';
+}
+
+// Build char cards
+function buildCharCards(containerId,tab){
+  const el=document.getElementById(containerId);
+  el.innerHTML=Object.values(CHARS).map(ch=>`
+    <div class="cc ${ch.id}" onclick="selChar('${ch.id}','${tab}')">
+      <div class="cc-band"></div>
+      <div class="cc-portrait">
+        <div class="cc-tag">${ch.theory}</div>
+        ${FACES[ch.id]}
+      </div>
+      <div class="cc-body">
+        <div class="cc-name">${ch.full}</div>
+        <div class="cc-ori">${ch.id==='lb'?'Francia · 1924–2001':ch.id==='cg'?'España · 1928–1983':ch.id==='pb'?'Francia · 1934–':'Portugal · 1933–'}</div>
+        <div class="cc-desc">${ch.id==='lb'?'Educación a través del movimiento. Unidad psicosomática.':ch.id==='cg'?'El deporte educa. Homo deportivus y valores humanos.':ch.id==='pb'?'Conducta motriz. Lógica interna del juego colectivo.':'Corte epistemológico. Nueva ciencia de la motricidad.'}</div>
+        <div class="cc-stats">${ch.stats.map(s=>`<div class="stat"><div class="sv">${s.v}</div><div class="sk">${s.k}</div></div>`).join('')}</div>
+      </div>
+      <div class="cc-check">✓</div>
+    </div>`).join('');
+}
+buildCharCards('cg-create','create');
+buildCharCards('cg-join','join');
+
+function selChar(c,tab){
+  if(tab==='create'){
+    selCreate=c;
+    document.querySelectorAll('#cg-create .cc').forEach(el=>el.classList.remove('sel'));
+    document.querySelector(`#cg-create .cc.${c}`).classList.add('sel');
+  } else {
+    selJoin=c;
+    document.querySelectorAll('#cg-join .cc').forEach(el=>el.classList.remove('sel'));
+    document.querySelector(`#cg-join .cc.${c}`).classList.add('sel');
+  }
+  checkLobbyReady(tab);
+}
+document.getElementById('c-name').addEventListener('input',()=>checkLobbyReady('create'));
+document.getElementById('j-name').addEventListener('input',()=>checkLobbyReady('join'));
+document.getElementById('j-code').addEventListener('input',function(){this.value=this.value.toUpperCase();checkLobbyReady('join')});
+function checkLobbyReady(tab){
+  if(tab==='create') document.getElementById('c-btn').disabled=!(document.getElementById('c-name').value.trim()&&selCreate);
+  else document.getElementById('j-btn').disabled=!(document.getElementById('j-name').value.trim()&&selJoin&&document.getElementById('j-code').value.trim().length>=3);
+}
+
+// ═══════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════
+async function saveRoom(d){try{await window.storage.set('room:'+roomCode,JSON.stringify(d),true)}catch(e){}}
+async function loadRoom(){try{const r=await window.storage.get('room:'+roomCode,true);return r?JSON.parse(r.value):null}catch(e){return null}}
+async function savePlayer(){
+  try{await window.storage.set('player:'+roomCode+':'+myId,JSON.stringify({
+    id:myId,name:myName,char:myChar,score:myScore,ts:Date.now()
+  }),true)}catch(e){}
+}
+async function loadPlayers(){
+  try{
+    const keys=await window.storage.list('player:'+roomCode+':',true);
+    if(!keys||!keys.keys)return[];
+    const ps=[];
+    for(const k of keys.keys){try{const r=await window.storage.get(k,true);if(r)ps.push(JSON.parse(r.value))}catch(e){}}
+    return ps.sort((a,b)=>b.score-a.score);
+  }catch(e){return[]}
+}
+
+// ═══════════════════════════════════════════
+// ROOM
+// ═══════════════════════════════════════════
+function genCode(){return Math.random().toString(36).slice(2,6).toUpperCase()}
+
+async function createRoom(){
+  myName=document.getElementById('c-name').value.trim();
+  myChar=selCreate; isHost=true;
+  roomCode=genCode();
+  myScore=0; myLog=[];
+  document.getElementById('w-code').textContent=roomCode;
+  const room={code:roomCode,host:myId,state:'waiting',round:0,
+    turnOrder:[],currentTurn:0,currentAttacker:null,
+    phase:'argue',attackPayload:null,started:false,ts:Date.now()};
+  await saveRoom(room);
+  await savePlayer();
+  show('s-waiting');
+  updateWaiting();
+  startPoll();
+}
+
+async function joinRoom(){
+  const code=document.getElementById('j-code').value.trim().toUpperCase();
+  myName=document.getElementById('j-name').value.trim();
+  myChar=selJoin; isHost=false;
+  const prev=roomCode; roomCode=code;
+  const room=await loadRoom();
+  if(!room){
+    roomCode=prev;
+    const e=document.getElementById('j-err');
+    e.textContent='Sala no encontrada. Verifica el código.';
+    e.style.display='block';
+    return;
+  }
+  if(room.started){
+    roomCode=prev;
+    document.getElementById('j-err').textContent='El debate ya comenzó.';
+    document.getElementById('j-err').style.display='block';
+    return;
+  }
+  myScore=0; myLog=[];
+  document.getElementById('w-code').textContent=roomCode;
+  await savePlayer();
+  show('s-waiting');
+  updateWaiting();
+  startPoll();
+}
+
+async function updateWaiting(){
+  const players=await loadPlayers();
+  document.getElementById('w-count').textContent=players.length;
+  document.getElementById('w-players').innerHTML=players.map(p=>`
+    <div class="pl-row ${p.char}">
+      <div class="pl-mini ${p.char}">${MINI[p.char]}</div>
+      <div>
+        <div class="pl-name">${p.name}${p.id===myId?' (tú)':''}</div>
+        <div class="pl-theory">${CHARS[p.char].theory}</div>
+      </div>
+      <span class="pl-badge badge-me">Listo</span>
+    </div>`).join('');
+  if(isHost){
+    if(players.length>=2){
+      document.getElementById('w-start').style.display='block';
+      document.getElementById('w-notif').innerHTML=`<strong>${players.length} jugadores</strong> listos para el debate`;
+      document.getElementById('w-notif').className='notif ok';
+    } else {
+      document.getElementById('w-start').style.display='none';
+      document.getElementById('w-notif').innerHTML=`<span class="pulse"></span>Esperando más jugadores (mín. 2)`;
+      document.getElementById('w-notif').className='notif info';
+    }
+  } else {
+    document.getElementById('w-notif').innerHTML=`<span class="pulse"></span>Esperando que el anfitrión inicie...`;
+    document.getElementById('w-notif').className='notif info';
+    document.getElementById('w-start').style.display='none';
+  }
+}
+
+async function hostStart(){
+  const players=await loadPlayers();
+  // Random turn order
+  const ids=players.map(p=>p.id).sort(()=>Math.random()-.5);
+  // Random attacker for first round (different from first player)
+  const firstAttacker=ids.find(id=>id!==ids[0])||ids[ids.length-1];
+  const room=await loadRoom();
+  room.started=true; room.state='playing';
+  room.turnOrder=ids; room.currentTurn=0; room.round=1;
+  room.currentAttacker=firstAttacker;
+  room.phase='argue'; room.attackPayload=null;
+  await saveRoom(room);
+}
+
+function leaveLobby(){
+  stopPoll(); roomCode=''; isHost=false;
+  selCreate=''; selJoin='';
+  document.querySelectorAll('.cc').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('c-btn').disabled=true;
+  document.getElementById('j-btn').disabled=true;
+  show('s-lobby');
+}
+
+// ═══════════════════════════════════════════
+// POLLING
+// ═══════════════════════════════════════════
+function startPoll(){stopPoll();pollT=setInterval(poll,2500)}
+function stopPoll(){if(pollT){clearInterval(pollT);pollT=null}}
+
+async function poll(){
+  const room=await loadRoom();
+  if(!room)return;
+  const screen=document.querySelector('.screen.active').id;
+
+  if(screen==='s-waiting'){
+    if(room.started){
+      gameState=room;
+      await routeToMyAction(room);
+    } else {
+      updateWaiting();
+    }
+    return;
+  }
+
+  // During game: always resync
+  gameState=room;
+  const myTurnPlayerId=room.turnOrder[room.currentTurn%room.turnOrder.length];
+  const isMyTurn=myTurnPlayerId===myId;
+  const isMyAttackTurn=room.currentAttacker===myId;
+
+  if(room.phase==='argue'){
+    if(isMyTurn && screen!=='s-my-turn') await routeToMyAction(room);
+    else if(!isMyTurn && screen!=='s-waiting-turn') await showWaitingTurn(room);
+  } else if(room.phase==='defend'){
+    // The one who argued must defend
+    if(myTurnPlayerId===myId && screen!=='s-defend') await showDefendScreen(room);
+    else if(myTurnPlayerId!==myId && screen!=='s-waiting-turn') await showWaitingTurn(room);
+  } else if(room.phase==='attack'){
+    if(isMyAttackTurn && screen!=='s-attack') await showAttackScreen(room);
+    else if(!isMyAttackTurn && screen!=='s-waiting-turn') await showWaitingTurn(room);
+  } else if(room.phase==='done'){
+    if(screen!=='s-end') endGame();
+  }
+
+  // Always update marathon
+  updateMarathon(room);
+}
+
+async function routeToMyAction(room){
+  gameState=room;
+  const myTurnPlayerId=room.turnOrder[room.currentTurn%room.turnOrder.length];
+  if(myTurnPlayerId===myId){
+    show('s-my-turn'); loadMyTurn(room);
+  } else if(room.currentAttacker===myId && room.phase==='attack'){
+    show('s-attack'); loadAttackScreen(room);
+  } else {
+    await showWaitingTurn(room);
+  }
+}
+
+// ═══════════════════════════════════════════
+// MARATHON
+// ═══════════════════════════════════════════
+let _marathon_cache={};
+async function updateMarathon(room){
+  const players=await loadPlayers();
+  _marathon_cache={};
+  players.forEach(p=>{_marathon_cache[p.id]=p});
+  ['mt-marathon','wt-marathon'].forEach(elId=>{
+    const el=document.getElementById(elId);
+    if(!el)return;
+    const max=Math.max(...players.map(p=>p.score),1);
+    const sorted=[...players].sort((a,b)=>b.score-a.score);
+    el.innerHTML=`<div class="m-title">🏃 Clasificación en vivo</div>`+
+      sorted.map((p,rank)=>{
+        const pct=Math.max(5,Math.round((p.score/max)*84));
+        const isMe=p.id===myId;
+        return `<div class="m-row ${p.char}">
+          <div class="m-meta">
+            <div class="pl-mini ${p.char}" style="width:24px;height:24px">${MINI[p.char]}</div>
+            <span class="m-name" style="${isMe?'font-weight:700;color:#fff':''}">${p.name}${isMe?' (tú)':''}${rank===0?'<span class="ldr-badge">Líder</span>':''}</span>
+            <span class="m-pts">${p.score}</span>
+          </div>
+          <div class="track">
+            <div class="track-in"><div class="track-fill ${p.char}" style="width:${pct}%">
+              <div class="rh">${MINI[p.char]}</div>
+            </div></div>
+            <div class="flag">🏁</div>
+          </div>
+        </div>`;
+      }).join('');
+  });
+}
+
+// ═══════════════════════════════════════════
+// WAITING TURN
+// ═══════════════════════════════════════════
+async function showWaitingTurn(room){
+  show('s-waiting-turn');
+  const players=await loadPlayers();
+  const activeId=room.turnOrder[room.currentTurn%room.turnOrder.length];
+  const active=players.find(p=>p.id===activeId);
+  const attacker=players.find(p=>p.id===room.currentAttacker);
+
+  let icon='⏳',title='',sub='';
+  if(room.phase==='argue'){
+    icon='🎙️'; title=`Turno de ${active?active.name:'...'}`;
+    sub=`${active?CHARS[active.char].full:''} está argumentando. Espera tu turno.`;
+  } else if(room.phase==='attack'){
+    if(room.currentAttacker===myId){icon='⚔️';title='¡Tu turno de atacar!';sub='Recarga la app para ver la pantalla de ataque.';}
+    else{icon='⚔️';title=`${attacker?attacker.name:'...'} está atacando`;sub='Espera la respuesta del debate.';}
+  } else if(room.phase==='defend'){
+    icon='🛡️'; title=`${active?active.name:'...'} se defiende`;
+    sub='El jugador activo está respondiendo el ataque.';
+  }
+
+  document.getElementById('wt-msg').innerHTML=`
+    <div class="waiting-icon">${icon}</div>
+    <div class="waiting-title">${title}</div>
+    <div class="waiting-sub">${sub}</div>`;
+
+  // Player list with badges
+  document.getElementById('wt-players').innerHTML=players.map(p=>{
+    let badge='';
+    if(p.id===activeId && room.phase==='argue') badge=`<span class="pl-badge badge-turn">Su turno</span>`;
+    else if(p.id===room.currentAttacker && room.phase==='attack') badge=`<span class="pl-badge badge-attack">Atacando</span>`;
+    else if(p.id===myId) badge=`<span class="pl-badge badge-me">Tú</span>`;
+    else badge=`<span class="pl-badge badge-wait">Espera</span>`;
+    return `<div class="pl-row ${p.char}">
+      <div class="pl-mini ${p.char}">${MINI[p.char]}</div>
+      <div style="flex:1"><div class="pl-name">${p.name}</div><div class="pl-theory">${CHARS[p.char].theory} · ${p.score} pts</div></div>
+      ${badge}
+    </div>`;
+  }).join('');
+  updateMarathon(room);
+}
+
+// ═══════════════════════════════════════════
+// MY TURN — ARGUE
+// ═══════════════════════════════════════════
+function loadMyTurn(room){
+  const sc=SCENARIOS[Math.min(room.round-1,SCENARIOS.length-1)];
+  document.getElementById('mt-round-info').textContent=`Ronda ${room.round} de ${SCENARIOS.length} · Argumenta con ${CHARS[myChar].name}`;
+  document.getElementById('mt-score').textContent=myScore;
+  document.getElementById('mt-tag').textContent=sc.tag;
+  document.getElementById('mt-q').textContent=sc.q;
+
+  const myArgs=ARGS[myChar];
+  document.getElementById('mt-actions').innerHTML=myArgs.map((a,i)=>`
+    <button class="ab ${a.type}" onclick="chooseArg(${i})">
+      ${a.coh==='own'?`<span class="coh-badge own">✓ Tu autor</span>`:`<span class="coh-badge other">⚠ Otro autor</span>`}
+      <span class="ab-type">${a.label}</span>
+      <div class="ab-text">${a.text}</div>
+    </button>`).join('');
+  document.getElementById('mt-result').innerHTML='';
+  updateMarathon(room);
+}
+
+async function chooseArg(idx){
+  document.querySelectorAll('.ab').forEach(b=>b.disabled=true);
+  const a=ARGS[myChar][idx];
+
+  // Coherence scoring
+  let pts=a.pts;
+  if(a.coh==='other'&&a.res!=='miss') pts=Math.floor(pts*0.4); // coherence penalty
+
+  myScore=Math.max(0,myScore+pts);
+  await savePlayer();
+
+  const cls=a.res==='spc'?'spc':a.res==='hit'?'hit':a.coh==='other'?'warn':'miss';
+  const title=a.res==='spc'&&a.coh==='own'?'¡GOLPE MAESTRO!':
+    a.res==='spc'&&a.coh==='other'?'ARGUMENTO AJENO':
+    a.res==='hit'&&a.coh==='own'?'¡ARGUMENTO SÓLIDO!':
+    a.res==='hit'&&a.coh==='other'?'COHERENCIA REDUCIDA':'ARGUMENTO DÉBIL';
+  const ptsStr=(pts>=0?'+':'')+pts;
+
+  myLog.push({round:gameState.round,action:a.text,result:a.res,coh:a.coh,pts,fb:a.fb});
+
+  document.getElementById('mt-result').innerHTML=`
+    <div class="result-box ${cls}">
+      <div class="r-title fd">${title}</div>
+      <div class="r-fb">${a.fb}</div>
+      ${a.coh==='other'?`<div style="font-size:11px;color:var(--cg2);margin-top:4px">⚠ Argumento de ${CHARS[a.author].full} — penalización por incoherencia</div>`:''}
+      <div class="r-pts fd">${ptsStr} PTS</div>
+    </div>
+    <div class="notif warn mt10"><span class="pulse"></span>Esperando al jugador que te atacará...</div>`;
+
+  // Save argue result and move to attack phase
+  const room=await loadRoom();
+  room.phase='attack';
+  room.argueResult={playerId:myId,argText:a.text,argPts:pts,coh:a.coh,char:myChar};
+  // Pick attacker: random other player
+  const others=room.turnOrder.filter(id=>id!==myId);
+  room.currentAttacker=others[Math.floor(Math.random()*others.length)];
+  await saveRoom(room);
+}
+
+// ═══════════════════════════════════════════
+// ATTACK PHASE
+// ═══════════════════════════════════════════
+async function showAttackScreen(room){
+  show('s-attack');
+  loadAttackScreen(room);
+}
+
+async function loadAttackScreen(room){
+  const players=await loadPlayers();
+  const target=players.find(p=>p.id===room.turnOrder[room.currentTurn%room.turnOrder.length]);
+  if(!target)return;
+  const targetChar=target.char;
+
+  document.getElementById('atk-target-info').textContent=`Ataca a ${target.name} (${CHARS[targetChar].full})`;
+  document.getElementById('atk-context').innerHTML=`
+    ⚔️ <strong>${target.name}</strong> argumentó: <em>"${room.argueResult?.argText||'...'}"</em>
+    <br>Usa las debilidades reales de <strong>${CHARS[targetChar].full}</strong> para desafiar su postura.`;
+
+  const weaks=WEAKNESSES[targetChar];
+  document.getElementById('atk-weaknesses').innerHTML=weaks.map((w,i)=>`
+    <div class="weak-btn" onclick="selWeak(${i})" id="weak-${i}">
+      <div class="weak-btn-label">${w.label}</div>
+      <div class="weak-btn-text">${w.text}</div>
+    </div>`).join('');
+
+  window._atkWeakIdx=null;
+  window._atkTarget=target;
+  window._atkTargetChar=targetChar;
+}
+
+function selWeak(i){
+  document.querySelectorAll('.weak-btn').forEach(b=>b.classList.remove('sel-weak'));
+  document.getElementById('weak-'+i).classList.add('sel-weak');
+  window._atkWeakIdx=i;
+}
+
+async function sendAttack(){
+  if(window._atkWeakIdx===null){
+    alert('Elige al menos una debilidad para atacar.');
+    return;
+  }
+  document.getElementById('atk-send-btn').disabled=true;
+  const room=await loadRoom();
+  const weak=WEAKNESSES[window._atkTargetChar][window._atkWeakIdx];
+  const custom=document.getElementById('atk-custom').value.trim();
+  const attackText=custom?`${weak.text} — ${custom}`:weak.text;
+
+  room.phase='defend';
+  room.attackPayload={
+    attackerId:myId,attackerName:myName,attackerChar:myChar,
+    targetId:window._atkTarget.id,weakLabel:weak.label,
+    attackText,custom:custom||null
+  };
+  await saveRoom(room);
+  show('s-waiting-turn');
+}
+
+// ═══════════════════════════════════════════
+// DEFEND PHASE
+// ═══════════════════════════════════════════
+async function showDefendScreen(room){
+  show('s-defend');
+  const ap=room.attackPayload;
+  if(!ap)return;
+
+  document.getElementById('def-from-info').textContent=`Ataque de ${ap.attackerName} (${CHARS[ap.attackerChar].full})`;
+  document.getElementById('def-score').textContent=myScore;
+  document.getElementById('def-attacker').textContent=`${ap.attackerName} · ${CHARS[ap.attackerChar].theory}`;
+  document.getElementById('def-attack-text').textContent=ap.attackText;
+
+  const defs=DEFENSES[myChar];
+  document.getElementById('def-actions').innerHTML=defs.map((d,i)=>`
+    <button class="ab ${d.type}" onclick="chooseDefense(${i})">
+      <span class="ab-type">${d.label}</span>
+      <div class="ab-text">${d.text}</div>
+    </button>`).join('');
+  document.getElementById('def-result').innerHTML='';
+}
+
+async function chooseDefense(idx){
+  document.querySelectorAll('#def-actions .ab').forEach(b=>b.disabled=true);
+  const d=DEFENSES[myChar][idx];
+  let pts=d.pts;
+  myScore=Math.max(0,myScore+pts);
+  await savePlayer();
+
+  const cls=d.res==='spc'?'spc':d.res==='hit'?'hit':'miss';
+  const title=d.res==='spc'?'¡DEFENSA MAGISTRAL!':d.res==='hit'?'DEFENSA VÁLIDA':'DEFENSA INSUFICIENTE';
+  const ptsStr=(pts>=0?'+':'')+pts;
+
+  myLog.push({round:gameState.round,action:d.text,result:d.res,coh:'defense',pts,fb:d.fb});
+
+  document.getElementById('def-result').innerHTML=`
+    <div class="result-box ${cls}">
+      <div class="r-title fd">${title}</div>
+      <div class="r-fb">${d.fb}</div>
+      <div class="r-pts fd">${ptsStr} PTS</div>
+    </div>
+    <div class="notif info mt10"><span class="pulse"></span>Procesando siguiente turno...</div>`;
+
+  // Advance turn
+  const room=await loadRoom();
+  room.currentTurn=(room.currentTurn||0)+1;
+  room.round=Math.floor(room.currentTurn/room.turnOrder.length)+1;
+  room.phase='argue';
+  room.attackPayload=null;
+  room.argueResult=null;
+
+  // Re-pick attacker for next round
+  const next=room.turnOrder[room.currentTurn%room.turnOrder.length];
+  const others=room.turnOrder.filter(id=>id!==next);
+  room.currentAttacker=others[Math.floor(Math.random()*others.length)];
+
+  if(room.round>SCENARIOS.length){
+    room.phase='done'; room.state='done';
+  }
+  await saveRoom(room);
+
+  if(room.phase==='done') endGame();
+}
+
+// ═══════════════════════════════════════════
+// END
+// ═══════════════════════════════════════════
+async function endGame(){
+  stopPoll();
+  show('s-end');
+  const ch=CHARS[myChar];
+  const players=await loadPlayers();
+  const sorted=[...players].sort((a,b)=>b.score-a.score);
+  const myRank=sorted.findIndex(p=>p.id===myId)+1;
+
+  let title,trophy,sub;
+  if(myScore>=220){title='HERMENÉUTICA DOMINANTE';trophy='🏆';sub=`${ch.full} venció el debate con coherencia y solidez teórica.`;}
+  else if(myScore>=140){title='DEBATE SÓLIDO';trophy='🥈';sub=`${ch.full} argumentó con consistencia. Algunos puntos pueden profundizarse.`;}
+  else if(myScore>=70){title='EN CONSTRUCCIÓN';trophy='🎓';sub=`Tu comprensión de la ${ch.theory} es básica. Revisa los argumentos donde fallaste.`;}
+  else{title='EL ADVERSARIO VENCIÓ';trophy='📚';sub=`La ${ch.theory} es compleja. Revisarla te dará mejores argumentos.`;}
+
+  document.getElementById('e-title').textContent=title;
+  document.getElementById('e-trophy').textContent=trophy;
+  document.getElementById('e-score').textContent=myScore;
+  document.getElementById('e-charname').textContent=ch.full+' · '+ch.theory+' · Puesto '+myRank;
+  document.getElementById('e-sub').textContent=sub;
+  document.getElementById('e-refl').textContent=REFLECTIONS[myChar];
+
+  document.getElementById('e-leaderboard').innerHTML=sorted.map((p,i)=>`
+    <div class="pl-row ${p.char}">
+      <span style="font-family:'Bebas Neue',cursive;font-size:20px;color:${i===0?'var(--gold)':i===1?'var(--silver,#c0c8d8)':'var(--muted)'};min-width:28px;text-align:center">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</span>
+      <div class="pl-mini ${p.char}">${MINI[p.char]}</div>
+      <div style="flex:1"><div class="pl-name">${p.name}${p.id===myId?' (tú)':''}</div><div class="pl-theory">${CHARS[p.char].theory}</div></div>
+      <span class="pl-score">${p.score}</span>
+    </div>`).join('');
+
+  const ts=new Date().toISOString().slice(0,16).replace('T',' ');
+  const code=btoa(JSON.stringify({nombre:myName,teorico:ch.full,hermeneutica:ch.theory,puntaje:myScore,puesto:myRank,rondas:myLog.map(r=>({r:r.round,pts:r.pts,ok:r.result!=='miss',coh:r.coh})),fecha:ts}));
+  document.getElementById('e-code').textContent=code;
+}
+
+function copyCode(){
+  navigator.clipboard.writeText(document.getElementById('e-code').textContent).then(()=>{
+    document.getElementById('copy-btn').textContent='✓ COPIADO';
+    setTimeout(()=>{document.getElementById('copy-btn').textContent='COPIAR CÓDIGO';},2500);
+  }).catch(()=>alert('Selecciona el código y cópialo con Ctrl+C'));
+}
+
+function goLobby(){
+  stopPoll(); roomCode=''; isHost=false; myScore=0; myLog=[];
+  selCreate=''; selJoin=''; gameState=null;
+  document.querySelectorAll('.cc').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('c-btn').disabled=true;
+  document.getElementById('j-btn').disabled=true;
+  SFX.stopAmbient();
+  SFX.stopSuspense();
+  show('s-lobby');
+}
+
+// ═══════════════════════════════════════════
+// MODERATOR PANEL
+// ═══════════════════════════════════════════
+const MOD_PIN = '2025'; // ← Change this PIN as needed
+let modAuthenticated = false;
+let modCurrentRoom = '';
+
+// ── PIN logic ──
+function openMod() {
+  document.getElementById('mod-overlay').classList.add('open');
+  if (modAuthenticated) {
+    showModReport();
+  } else {
+    document.getElementById('mod-pin-screen').style.display = 'flex';
+    document.getElementById('mod-report-screen').style.display = 'none';
+    [0,1,2,3].forEach(i => { document.getElementById('pin-'+i).value = ''; });
+    document.getElementById('pin-err').textContent = '';
+    setTimeout(() => document.getElementById('pin-0').focus(), 100);
+  }
+}
+
+function closeMod() {
+  document.getElementById('mod-overlay').classList.remove('open');
+}
+
+function pinInput(idx) {
+  const val = document.getElementById('pin-'+idx).value;
+  if (val && idx < 3) document.getElementById('pin-'+(idx+1)).focus();
+  document.getElementById('pin-err').textContent = '';
+}
+
+function pinKey(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('pin-'+idx).value && idx > 0) {
+    document.getElementById('pin-'+(idx-1)).focus();
+  }
+  if (e.key === 'Enter') checkPin();
+}
+
+function checkPin() {
+  const entered = [0,1,2,3].map(i => document.getElementById('pin-'+i).value).join('');
+  if (entered === MOD_PIN) {
+    modAuthenticated = true;
+    showModReport();
+  } else {
+    document.getElementById('pin-err').textContent = 'PIN incorrecto. Intenta de nuevo.';
+    [0,1,2,3].forEach(i => { document.getElementById('pin-'+i).value = ''; });
+    document.getElementById('pin-0').focus();
+    // Shake animation
+    const inp = document.querySelector('.pin-inputs');
+    inp.style.animation = 'none';
+    inp.style.transform = 'translateX(8px)';
+    setTimeout(() => { inp.style.transform = 'translateX(-8px)'; }, 80);
+    setTimeout(() => { inp.style.transform = 'translateX(4px)'; }, 160);
+    setTimeout(() => { inp.style.transform = 'translateX(0)'; }, 240);
+  }
+}
+
+// ── Show report ──
+function showModReport() {
+  document.getElementById('mod-pin-screen').style.display = 'none';
+  document.getElementById('mod-report-screen').style.display = 'block';
+  // Use active room code if available
+  if (roomCode) modCurrentRoom = roomCode;
+  document.getElementById('mod-room-info').innerHTML =
+    `<span class="pulse"></span>Sala: <strong>${modCurrentRoom || '—'}</strong> · Última actualización: ${new Date().toLocaleTimeString('es-CO')}`;
+  loadModData();
+}
+
+async function refreshReport() {
+  if (roomCode) modCurrentRoom = roomCode;
+  document.getElementById('mod-room-info').innerHTML =
+    `<span class="pulse"></span>Sala: <strong>${modCurrentRoom || '—'}</strong> · Actualizando...`;
+  await loadModData();
+  document.getElementById('mod-room-info').innerHTML =
+    `<span class="pulse"></span>Sala: <strong>${modCurrentRoom || '—'}</strong> · Actualizado: ${new Date().toLocaleTimeString('es-CO')}`;
+}
+
+async function loadModData() {
+  if (!modCurrentRoom) {
+    // Try to get any recent room from storage
+    renderModEmpty();
+    return;
+  }
+
+  // Load all players for this room
+  try {
+    const keys = await window.storage.list('player:'+modCurrentRoom+':', true);
+    if (!keys || !keys.keys || keys.keys.length === 0) { renderModEmpty(); return; }
+
+    const players = [];
+    for (const k of keys.keys) {
+      try {
+        const r = await window.storage.get(k, true);
+        if (r) players.push(JSON.parse(r.value));
+      } catch(e) {}
+    }
+
+    // Load room state for context
+    let room = null;
+    try {
+      const rr = await window.storage.get('room:'+modCurrentRoom, true);
+      if (rr) room = JSON.parse(rr.value);
+    } catch(e) {}
+
+    renderAllReports(players, room);
+  } catch(e) {
+    renderModEmpty();
+  }
+}
+
+function renderModEmpty() {
+  const msg = `<div style="text-align:center;padding:3rem;color:var(--muted)">
+    <div style="font-size:40px;margin-bottom:12px">📭</div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:22px;margin-bottom:8px">Sin datos disponibles</div>
+    <div style="font-size:13px">Asegúrate de estar en una sala activa o ingresa el código de sala.</div>
+    <div style="margin-top:16px">
+      <input class="inp" id="mod-room-input" placeholder="Código de sala (ej: AB12)" maxlength="4"
+        style="width:160px;text-align:center;text-transform:uppercase;letter-spacing:.2em;font-family:'Bebas Neue',cursive;font-size:20px;display:inline-block">
+      <button class="btn btn-gold" style="width:auto;padding:11px 20px;margin-left:8px;font-size:16px"
+        onclick="setModRoom()">CARGAR</button>
+    </div>
+  </div>`;
+  ['rep-ranking','rep-summary','rep-detail'].forEach(id => {
+    document.getElementById(id).innerHTML = msg;
+  });
+}
+
+function setModRoom() {
+  const code = document.getElementById('mod-room-input').value.trim().toUpperCase();
+  if (code.length >= 3) { modCurrentRoom = code; loadModData(); }
+}
+
+// ── Render all three report levels ──
+function renderAllReports(players, room) {
+  const sorted = [...players].sort((a, b) => b.score - a.score);
+  const total = players.length;
+  const avgScore = total ? Math.round(players.reduce((s, p) => s + p.score, 0) / total) : 0;
+  const leader = sorted[0];
+  const gameStatus = room ? (room.state === 'done' ? 'Finalizado' : room.state === 'playing' ? 'En curso' : 'Esperando') : '—';
+
+  // ── REPORT 1: Quick ranking ──
+  document.getElementById('rep-sum-cards').innerHTML = `
+    <div class="sum-card"><div class="sum-card-val">${total}</div><div class="sum-card-lbl">Jugadores</div></div>
+    <div class="sum-card"><div class="sum-card-val">${avgScore}</div><div class="sum-card-lbl">Promedio</div></div>
+    <div class="sum-card"><div class="sum-card-val">${leader ? leader.score : 0}</div><div class="sum-card-lbl">Puntaje máx.</div></div>
+    <div class="sum-card"><div class="sum-card-val" style="font-size:20px">${gameStatus}</div><div class="sum-card-lbl">Estado</div></div>
+  `;
+
+  const maxScore = Math.max(...players.map(p => p.score), 1);
+  const charColors = { lb:'#07c98a', cg:'#f5a623', pb:'#7c72e8', ms:'#e05530' };
+
+  // Bar chart
+  document.getElementById('rep-barchart').innerHTML = sorted.map(p => `
+    <div class="bar-row">
+      <div class="bar-label" title="${p.name}">${p.name}</div>
+      <div class="bar-track">
+        <div class="bar-fill ${p.char}" style="width:${Math.max(6, Math.round(p.score/maxScore*100))}%;background:linear-gradient(90deg,${charColors[p.char]}88,${charColors[p.char]})">
+          <span class="bar-score">${p.score}</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Quick table
+  document.getElementById('rep-quick-body').innerHTML = sorted.map((p, i) => `
+    <tr>
+      <td class="rank-num" style="color:${i===0?'var(--gold)':i===1?'#c0c8d8':i===2?'#c87840':'var(--muted)'}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+      <td>
+        <div style="font-weight:600;color:var(--white)">${p.name}</div>
+      </td>
+      <td>
+        <span style="font-size:11px;background:${charColors[p.char]}22;color:${charColors[p.char]};border:1px solid ${charColors[p.char]}44;padding:2px 8px;border-radius:20px;white-space:nowrap">${CHARS[p.char]?.theory||p.char}</span>
+      </td>
+      <td class="score-big" style="color:${charColors[p.char]}">${p.score}</td>
+    </tr>`).join('');
+
+  // ── REPORT 2: Full summary ──
+  // Decode log from stored data if available
+  document.getElementById('rep-full-body').innerHTML = sorted.map((p, i) => {
+    const log = p.log || [];
+    const hits = log.filter(r => r.ok).length;
+    const total_r = log.length || 1;
+    const cohOwn = log.filter(r => r.coh === 'own').length;
+    const cohPct = total_r > 0 ? Math.round((cohOwn / total_r) * 100) : '—';
+    const cohClass = cohPct >= 70 ? 'coh-high' : cohPct >= 40 ? 'coh-mid' : 'coh-low';
+    const cohLabel = cohPct >= 70 ? 'Alta' : cohPct >= 40 ? 'Media' : typeof cohPct === 'number' ? 'Baja' : '—';
+    return `<tr>
+      <td class="rank-num" style="color:${i===0?'var(--gold)':i===1?'#c0c8d8':i===2?'#c87840':'var(--muted)'}">${i+1}</td>
+      <td>
+        <div style="font-weight:600;color:var(--white);margin-bottom:2px">${p.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${new Date(p.ts).toLocaleTimeString('es-CO')}</div>
+      </td>
+      <td>
+        <div style="font-size:12px;color:var(--white)">${CHARS[p.char]?.full||p.char}</div>
+        <div style="font-size:11px;color:${charColors[p.char]}">${CHARS[p.char]?.theory||''}</div>
+      </td>
+      <td class="score-big" style="color:${charColors[p.char]}">${p.score}</td>
+      <td>
+        <div style="font-size:13px;color:var(--white)">${hits}/${total_r}</div>
+        <div style="font-size:10px;color:var(--muted)">${total_r>0?Math.round(hits/total_r*100):0}% aciertos</div>
+      </td>
+      <td><span class="coh-pill ${cohClass}">${cohLabel} ${typeof cohPct==='number'?cohPct+'%':''}</span></td>
+    </tr>`;
+  }).join('');
+
+  // Insights
+  const highCoh = sorted.filter(p => {
+    const log = p.log || [];
+    const own = log.filter(r => r.coh === 'own').length;
+    return log.length > 0 && (own / log.length) >= 0.7;
+  });
+  const lowCoh = sorted.filter(p => {
+    const log = p.log || [];
+    const own = log.filter(r => r.coh === 'own').length;
+    return log.length > 0 && (own / log.length) < 0.4;
+  });
+  const charCounts = {};
+  players.forEach(p => { charCounts[p.char] = (charCounts[p.char]||0) + 1; });
+  const mostUsed = Object.entries(charCounts).sort((a,b)=>b[1]-a[1])[0];
+
+  document.getElementById('rep-insights').innerHTML = `
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:10px">Análisis del grupo</div>
+    <div style="display:grid;gap:8px">
+      ${highCoh.length ? `<div style="font-size:13px;color:var(--white)">✅ <strong>Alta coherencia teórica:</strong> ${highCoh.map(p=>p.name).join(', ')} — argumentaron consistentemente con su hermenéutica.</div>` : ''}
+      ${lowCoh.length ? `<div style="font-size:13px;color:var(--white)">⚠️ <strong>Requieren refuerzo:</strong> ${lowCoh.map(p=>p.name).join(', ')} — usaron con frecuencia argumentos de otros autores.</div>` : ''}
+      ${mostUsed ? `<div style="font-size:13px;color:var(--white)">📊 <strong>Hermenéutica más elegida:</strong> ${CHARS[mostUsed[0]]?.theory||mostUsed[0]} (${mostUsed[1]} estudiante${mostUsed[1]>1?'s':''}).</div>` : ''}
+      <div style="font-size:13px;color:var(--white)">📈 <strong>Promedio del grupo:</strong> ${avgScore} puntos · Máximo: ${leader?leader.score:0} pts (${leader?leader.name:'—'}).</div>
+    </div>`;
+
+  // ── REPORT 3: Detailed accordion ──
+  document.getElementById('rep-accordions').innerHTML = sorted.map((p, i) => {
+    const log = p.log || [];
+    const charColor = charColors[p.char] || '#fff';
+    const decRows = log.length ? log.map(r => {
+      const isOk = r.ok;
+      const isCoh = r.coh === 'own';
+      const icon = r.coh === 'defense' ? '🛡️' : isOk && isCoh ? '★' : isOk ? '✓' : '✗';
+      const col = r.coh === 'defense' ? '#7c72e8' : isOk && isCoh ? '#f5c842' : isOk ? '#7bc832' : '#f07070';
+      const ptStr = (r.pts >= 0 ? '+' : '') + r.pts;
+      const cohTag = r.coh === 'own' ? `<span style="font-size:9px;background:rgba(7,201,138,.2);color:#07c98a;border:1px solid rgba(7,201,138,.25);padding:1px 5px;border-radius:20px;margin-left:4px">✓ coherente</span>` :
+        r.coh === 'other' ? `<span style="font-size:9px;background:rgba(245,166,35,.15);color:#f5a623;border:1px solid rgba(245,166,35,.2);padding:1px 5px;border-radius:20px;margin-left:4px">⚠ argumento ajeno</span>` :
+        r.coh === 'defense' ? `<span style="font-size:9px;background:rgba(124,114,232,.2);color:#7c72e8;border:1px solid rgba(124,114,232,.25);padding:1px 5px;border-radius:20px;margin-left:4px">🛡 defensa</span>` : '';
+      return `<div class="dec-row">
+        <div class="dec-icon" style="color:${col}">${icon}</div>
+        <div style="flex:1">
+          <div class="dec-round">Ronda ${r.r} ${cohTag}</div>
+          <div class="dec-action">"${r.action||'—'}"</div>
+          ${r.fb ? `<div class="dec-fb">${r.fb}</div>` : ''}
+        </div>
+        <div class="dec-pts" style="color:${col}">${ptStr}</div>
+      </div>`;
+    }).join('') : `<div style="font-size:12px;color:var(--muted);padding:8px 0">Sin decisiones registradas aún.</div>`;
+
+    return `<div class="player-accordion">
+      <div class="acc-header" onclick="toggleAcc(${i})">
+        <div class="pl-mini ${p.char}" style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:${charColor}22;border:1px solid ${charColor}55">${MINI[p.char]}</div>
+        <div style="flex:1">
+          <div style="font-weight:600;color:var(--white);font-size:14px">${p.name}</div>
+          <div style="font-size:11px;color:${charColor}">${CHARS[p.char]?.theory||p.char}</div>
+        </div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${charColor};margin-right:8px">${p.score}</div>
+        <div style="font-size:14px;color:var(--muted)" id="acc-arrow-${i}">▼</div>
+      </div>
+      <div class="acc-body" id="acc-body-${i}">${decRows}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleAcc(i) {
+  const body = document.getElementById('acc-body-'+i);
+  const arrow = document.getElementById('acc-arrow-'+i);
+  const isOpen = body.classList.toggle('open');
+  arrow.textContent = isOpen ? '▲' : '▼';
+}
+
+// ── Switch between report levels ──
+function switchReport(type) {
+  document.querySelectorAll('.rep-tab').forEach(t => t.classList.remove('on'));
+  event.target.classList.add('on');
+  document.getElementById('rep-ranking').style.display = type === 'ranking' ? 'block' : 'none';
+  document.getElementById('rep-summary').style.display = type === 'summary' ? 'block' : 'none';
+  document.getElementById('rep-detail').style.display = type === 'detail' ? 'block' : 'none';
+}
+
+// ── Save log with player data ──
+// Override savePlayer to include log
+const _origSavePlayer = savePlayer;
+async function savePlayer() {
+  try {
+    await window.storage.set('player:'+roomCode+':'+myId, JSON.stringify({
+      id: myId, name: myName, char: myChar, score: myScore,
+      log: myLog, ts: Date.now()
+    }), true);
+  } catch(e) {}
+}
+
+// Auto-refresh moderator panel if open
+setInterval(() => {
+  if (document.getElementById('mod-overlay').classList.contains('open') &&
+      document.getElementById('mod-report-screen').style.display !== 'none') {
+    refreshReport();
+  }
+}, 15000);
+
+// ═══════════════════════════════════════════
+// EXPORT — PDF & EXCEL
+// ═══════════════════════════════════════════
+
+async function collectExportData() {
+  const code = modCurrentRoom || roomCode;
+  if (!code) return null;
+  try {
+    const keys = await window.storage.list('player:' + code + ':', true);
+    if (!keys || !keys.keys || !keys.keys.length) return null;
+    const players = [];
+    for (const k of keys.keys) {
+      try { const r = await window.storage.get(k, true); if (r) players.push(JSON.parse(r.value)); } catch(e) {}
+    }
+    return players.sort((a, b) => b.score - a.score);
+  } catch(e) { return null; }
+}
+
+async function exportExcel() {
+  const btn = document.getElementById('btn-xls');
+  const orig = btn.textContent; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    const players = await collectExportData();
+    if (!players || !players.length) { alert('Sin datos para exportar.'); btn.textContent = orig; btn.disabled = false; return; }
+    const code = modCurrentRoom || roomCode || '—';
+    const now = new Date().toLocaleString('es-CO');
+    function esc(s) { const v = String(s ?? '').replace(/"/g, '""'); return /[,"\n\r]/.test(v) ? '"' + v + '"' : v; }
+    const rows = [
+      ['INFORME — LA BATALLA DE LAS HERMENÉUTICAS'],
+      ['Sala:', code, 'Fecha:', now, 'Participantes:', players.length],
+      [''],
+      ['RESUMEN'],
+      ['#', 'Nombre', 'Teórico', 'Hermenéutica', 'Puntaje', 'Aciertos', 'Total decisiones', '% Aciertos', '% Coherencia', 'Resultado'],
+    ];
+    players.forEach((p, i) => {
+      const log = p.log || [];
+      const hits = log.filter(r => r.ok).length;
+      const total = log.length;
+      const cohPct = total ? Math.round(log.filter(r => r.coh === 'own').length / total * 100) : 0;
+      const hitPct = total ? Math.round(hits / total * 100) : 0;
+      const result = p.score >= 220 ? 'Hermenéutica dominante' : p.score >= 140 ? 'Debate sólido' : p.score >= 70 ? 'En construcción' : 'El adversario venció';
+      rows.push([i+1, p.name, CHARS[p.char]?.full||p.char, CHARS[p.char]?.theory||p.char, p.score, hits, total, hitPct+'%', cohPct+'%', result]);
+    });
+    rows.push([''], ['DETALLE POR RONDA'], ['Nombre', 'Hermenéutica', 'Ronda', 'Tipo', 'Argumento', 'Coherencia', 'Resultado', 'Puntos', 'Retroalimentación']);
+    players.forEach(p => {
+      (p.log || []).forEach(r => {
+        const tipo = r.coh === 'defense' ? 'Defensa' : r.result === 'spc' ? 'Golpe maestro' : r.result === 'hit' ? 'Argumento' : 'Argumento débil';
+        const coh = r.coh === 'own' ? 'Coherente' : r.coh === 'other' ? 'Argumento ajeno' : r.coh === 'defense' ? 'Defensa' : '—';
+        rows.push([p.name, CHARS[p.char]?.theory||p.char, 'Ronda '+r.r, tipo, r.action||'—', coh, r.ok?'Correcto':'Incorrecto', (r.pts>=0?'+':'')+r.pts, r.fb||'—']);
+      });
+      rows.push(['']);
+    });
+    const csv = '\uFEFF' + rows.map(row => row.map(esc).join(',')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8;'}));
+    a.download = `hermeneuticas_${code}_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    btn.textContent = '✓ Descargado'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2500);
+  } catch(e) { alert('Error: ' + e.message); btn.textContent = orig; btn.disabled = false; }
+}
+
+async function exportPDF() {
+  const btn = document.getElementById('btn-pdf');
+  const orig = btn.textContent; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    const players = await collectExportData();
+    if (!players || !players.length) { alert('Sin datos para exportar.'); btn.textContent = orig; btn.disabled = false; return; }
+    const code = modCurrentRoom || roomCode || '—';
+    const now = new Date().toLocaleString('es-CO');
+    const avgScore = Math.round(players.reduce((s,p) => s+p.score, 0) / players.length);
+    const leader = players[0];
+    const CC = {lb:'#07c98a', cg:'#f5a623', pb:'#7c72e8', ms:'#e05530'};
+
+    const summaryRows = players.map((p,i) => {
+      const log = p.log||[]; const hits = log.filter(r=>r.ok).length; const total = log.length;
+      const cohPct = total ? Math.round(log.filter(r=>r.coh==='own').length/total*100) : 0;
+      const hitPct = total ? Math.round(hits/total*100) : 0;
+      const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
+      const c = CC[p.char]||'#666';
+      const cbg = cohPct>=70?'#e6f8ee':cohPct>=40?'#fef3dc':'#fde8e8';
+      const cc = cohPct>=70?'#1a6b30':cohPct>=40?'#7a4800':'#8b1a1a';
+      return `<tr>
+        <td style="text-align:center;font-size:15px;padding:7px 5px">${medal}</td>
+        <td style="padding:7px 6px;font-weight:600">${p.name}</td>
+        <td style="padding:7px 6px"><span style="background:${c}18;color:${c};border:1px solid ${c}44;padding:2px 8px;border-radius:20px;font-size:11px">${CHARS[p.char]?.theory||p.char}</span></td>
+        <td style="padding:7px 6px;font-weight:700;font-size:17px;color:${c};text-align:center">${p.score}</td>
+        <td style="padding:7px 6px;text-align:center">${hits}/${total} <span style="font-size:10px;color:#888">(${hitPct}%)</span></td>
+        <td style="padding:7px 6px;text-align:center"><span style="background:${cbg};color:${cc};padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600">${cohPct}%</span></td>
+      </tr>`;
+    }).join('');
+
+    const detailSections = players.map(p => {
+      const c = CC[p.char]||'#666'; const log = p.log||[];
+      const decRows = log.length ? log.map(r => {
+        const ok=r.ok; const own=r.coh==='own'; const def=r.coh==='defense';
+        const icon=def?'🛡':ok&&own?'★':ok?'✓':'✗';
+        const col=def?'#5050bb':ok&&own?'#c47a00':ok?'#2a6b10':'#8b1a1a';
+        const cbg=r.coh==='own'?'#e6f8ee;color:#1a6b30':r.coh==='other'?'#fef3dc;color:#7a4800':'#eeeeff;color:#3030aa';
+        const clabel=r.coh==='own'?'✓ coherente':r.coh==='other'?'⚠ argumento ajeno':r.coh==='defense'?'🛡 defensa':'—';
+        return `<tr style="border-bottom:1px solid #f0f0f0">
+          <td style="padding:5px 4px;text-align:center;font-size:13px;color:${col};font-weight:700">${icon}</td>
+          <td style="padding:5px 4px;font-size:10px;color:#888;white-space:nowrap">R.${r.r}</td>
+          <td style="padding:5px 4px;font-size:12px;font-style:italic">"${r.action||'—'}"</td>
+          <td style="padding:5px 4px;text-align:center"><span style="font-size:10px;padding:1px 6px;border-radius:20px;background:${cbg}">${clabel}</span></td>
+          <td style="padding:5px 4px;text-align:right;font-weight:700;color:${col};white-space:nowrap">${(r.pts>=0?'+':'')+r.pts}</td>
+        </tr>`;
+      }).join('') : `<tr><td colspan="5" style="padding:8px;color:#aaa;font-style:italic">Sin decisiones registradas.</td></tr>`;
+      return `<div style="margin-bottom:22px;page-break-inside:avoid">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:${c}12;border-left:4px solid ${c};border-radius:0 8px 8px 0;margin-bottom:7px">
+          <div style="flex:1"><div style="font-weight:700;font-size:14px">${p.name}</div><div style="font-size:11px;color:${c}">${CHARS[p.char]?.full||p.char} · ${CHARS[p.char]?.theory||''}</div></div>
+          <div style="font-size:22px;font-weight:900;color:${c}">${p.score} pts</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead><tr style="background:#f7f7f7"><th style="padding:4px;font-size:9px;text-transform:uppercase;color:#888;text-align:center"></th><th style="padding:4px;font-size:9px;text-transform:uppercase;color:#888">R.</th><th style="padding:4px;font-size:9px;text-transform:uppercase;color:#888">Argumento</th><th style="padding:4px;font-size:9px;text-transform:uppercase;color:#888;text-align:center">Coherencia</th><th style="padding:4px;font-size:9px;text-transform:uppercase;color:#888;text-align:right">Pts</th></tr></thead>
+          <tbody>${decRows}</tbody>
+        </table>
+      </div>`;
+    }).join('');
+
+    const highCoh = players.filter(p => { const l=p.log||[]; return l.length && l.filter(r=>r.coh==='own').length/l.length >= 0.7; });
+    const lowCoh  = players.filter(p => { const l=p.log||[]; return l.length && l.filter(r=>r.coh==='own').length/l.length < 0.4; });
+    const charCount = {}; players.forEach(p => { charCount[p.char] = (charCount[p.char]||0)+1; });
+    const mostUsed = Object.entries(charCount).sort((a,b)=>b[1]-a[1])[0];
+
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>Informe Hermenéuticas — Sala ${code}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#111;background:#fff;padding:28px;max-width:900px;margin:0 auto}
+h1{font-size:24px;font-weight:900;margin-bottom:4px}
+h2{font-size:15px;font-weight:700;margin:22px 0 9px;padding-bottom:5px;border-bottom:2px solid #e8e8e8}
+.meta{font-size:11px;color:#666;margin-bottom:18px;display:flex;gap:16px;flex-wrap:wrap}
+.cards{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.card{background:#f7f7f7;border:1px solid #e5e5e5;border-radius:9px;padding:12px 16px;text-align:center;flex:1;min-width:110px}
+.card-val{font-size:28px;font-weight:900;color:#1a1a1a;line-height:1}
+.card-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#888;padding:7px 5px;border-bottom:2px solid #e8e8e8;text-align:left}
+td{vertical-align:middle}
+.insight{background:#f0f6ff;border:1px solid #c5d8f0;border-radius:8px;padding:12px 14px;margin-top:6px}
+.insight p{font-size:12px;color:#1a2a3a;margin-bottom:5px;line-height:1.55}
+.insight p:last-child{margin-bottom:0}
+.footer{margin-top:28px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#bbb;text-align:center}
+@media print{body{padding:12px}@page{margin:1.5cm;size:A4}.no-break{page-break-inside:avoid}}
+</style></head><body>
+<h1>La Batalla de las Hermenéuticas</h1>
+<div class="meta">
+  <span>📚 Gallo Cadavid, L.E. — Cuatro hermenéuticas de la EF en Colombia</span>
+  <span>🏛 Sala: <strong>${code}</strong></span>
+  <span>📅 ${now}</span>
+  <span>👥 ${players.length} participantes</span>
+</div>
+<div class="cards">
+  <div class="card"><div class="card-val">${players.length}</div><div class="card-lbl">Participantes</div></div>
+  <div class="card"><div class="card-val">${avgScore}</div><div class="card-lbl">Promedio</div></div>
+  <div class="card"><div class="card-val">${leader.score}</div><div class="card-lbl">Puntaje máx.</div></div>
+  <div class="card"><div class="card-val" style="font-size:18px">${leader.name.split(' ')[0]}</div><div class="card-lbl">Líder</div></div>
+</div>
+<h2>📊 Ranking general</h2>
+<table><thead><tr>
+  <th style="width:36px">#</th><th>Estudiante</th><th>Hermenéutica</th>
+  <th style="text-align:center">Puntaje</th><th style="text-align:center">Aciertos</th><th style="text-align:center">Coherencia</th>
+</tr></thead><tbody>${summaryRows}</tbody></table>
+<h2>💡 Análisis del grupo</h2>
+<div class="insight">
+  ${highCoh.length?`<p>✅ <strong>Alta coherencia:</strong> ${highCoh.map(p=>p.name).join(', ')} argumentaron consistentemente con su hermenéutica propia.</p>`:''}
+  ${lowCoh.length?`<p>⚠️ <strong>Requieren refuerzo:</strong> ${lowCoh.map(p=>p.name).join(', ')} usaron frecuentemente argumentos de otros autores.</p>`:''}
+  <p>📈 <strong>Promedio:</strong> ${avgScore} pts · Máximo: ${leader.score} pts (${leader.name}) · Hermenéutica más elegida: ${CHARS[mostUsed[0]]?.theory||mostUsed[0]}.</p>
+</div>
+<h2 style="margin-top:26px">🔍 Detalle por participante</h2>
+${detailSections}
+<div class="footer">Generado por La Batalla de las Hermenéuticas · Universidad de Antioquia · ${now}</div>
+</body></html>`;
+
+    const win = window.open('', '_blank', 'width=960,height=800,scrollbars=yes');
+    if (!win) { alert('Permite ventanas emergentes en este sitio e intenta de nuevo.'); btn.textContent = orig; btn.disabled = false; return; }
+    win.document.write(html);
+    win.document.close();
+    win.onload = () => setTimeout(() => win.print(), 500);
+    btn.textContent = '✓ Listo'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000);
+  } catch(e) { alert('Error al generar PDF: ' + e.message); btn.textContent = orig; btn.disabled = false; }
+}
+
+// ═══════════════════════════════════════════
+// SOUND ENGINE — Web Audio API
+// ═══════════════════════════════════════════
+const SFX = (() => {
+  let ctx = null;
+  let ambientNodes = [];
+  let ambientGain = null;
+  let ambientRunning = false;
+  let muted = false;
+
+  function getCtx() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  // ── Master gain helper ──
+  function masterGain(val = 0.7) {
+    const g = getCtx().createGain();
+    g.gain.value = muted ? 0 : val;
+    g.connect(getCtx().destination);
+    return g;
+  }
+
+  // ── Oscillator helper ──
+  function osc(type, freq, start, dur, gainVal, master, detune = 0) {
+    const c = getCtx();
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    if (detune) o.detune.value = detune;
+    o.connect(g); g.connect(master);
+    g.gain.setValueAtTime(0, start);
+    g.gain.linearRampToValueAtTime(gainVal, start + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, start + dur);
+    o.start(start);
+    o.stop(start + dur + 0.05);
+    return o;
+  }
+
+  // ── Noise burst helper ──
+  function noise(start, dur, gainVal, master, filterFreq = 2000) {
+    const c = getCtx();
+    const bufSize = c.sampleRate * dur;
+    const buf = c.createBuffer(1, bufSize, c.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    const flt = c.createBiquadFilter();
+    flt.type = 'bandpass';
+    flt.frequency.value = filterFreq;
+    flt.Q.value = 1.5;
+    const g = c.createGain();
+    g.gain.setValueAtTime(gainVal, start);
+    g.gain.exponentialRampToValueAtTime(0.001, start + dur);
+    src.connect(flt); flt.connect(g); g.connect(master);
+    src.start(start); src.stop(start + dur + 0.05);
+  }
+
+  // ─────────────────────────────────────────
+  // 1. AMBIENT — tensión académica suave
+  //    Drones de cuerda + pulsos rítmicos + pad armónico en loop
+  // ─────────────────────────────────────────
+  function startAmbient() {
+    if (ambientRunning || muted) return;
+    ambientRunning = true;
+    const c = getCtx();
+    ambientGain = c.createGain();
+    ambientGain.gain.value = 0;
+    ambientGain.connect(c.destination);
+
+    // Fade in
+    ambientGain.gain.linearRampToValueAtTime(0.18, c.currentTime + 3);
+
+    // Low drone — fundamental tension note (D2)
+    const droneFreqs = [73.4, 110, 146.8, 220];
+    droneFreqs.forEach((f, i) => {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = i % 2 === 0 ? 'sawtooth' : 'sine';
+      o.frequency.value = f;
+      o.detune.value = (Math.random() - 0.5) * 8; // slight detune for warmth
+      const lfo = c.createOscillator();
+      const lfoG = c.createGain();
+      lfo.frequency.value = 0.15 + i * 0.07;
+      lfoG.gain.value = 3;
+      lfo.connect(lfoG); lfoG.connect(o.detune);
+      lfo.start();
+      g.gain.value = i < 2 ? 0.18 : 0.08;
+      o.connect(g); g.connect(ambientGain);
+      o.start();
+      ambientNodes.push(o, lfo);
+    });
+
+    // Rhythmic pulse — heartbeat feel (every ~1.8s)
+    function schedulePulse() {
+      if (!ambientRunning) return;
+      const now = c.currentTime;
+      const pg = c.createGain();
+      pg.gain.value = muted ? 0 : 0.22;
+      pg.connect(c.destination);
+
+      // Kick-like pulse
+      const kick = c.createOscillator();
+      kick.type = 'sine';
+      kick.frequency.setValueAtTime(120, now);
+      kick.frequency.exponentialRampToValueAtTime(40, now + 0.18);
+      const kg = c.createGain();
+      kg.gain.setValueAtTime(0.5, now);
+      kg.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      kick.connect(kg); kg.connect(pg);
+      kick.start(now); kick.stop(now + 0.25);
+
+      // Soft hi-hat noise
+      noise(now + 0.9, 0.06, 0.08, pg, 8000);
+
+      if (ambientRunning) setTimeout(schedulePulse, 1800 + Math.random() * 400);
+    }
+    setTimeout(schedulePulse, 2000);
+
+    // Harmonic pad — slow chord swells (Am → Em feel)
+    const chordSets = [
+      [220, 261.6, 329.6],   // A3-C4-E4
+      [196, 246.9, 329.6],   // G3-B3-E4
+      [164.8, 220, 293.7],   // E3-A3-D4
+      [174.6, 220, 261.6],   // F3-A3-C4
+    ];
+    let chordIdx = 0;
+    function scheduleChord() {
+      if (!ambientRunning) return;
+      const now = c.currentTime;
+      const chord = chordSets[chordIdx % chordSets.length];
+      chordIdx++;
+      chord.forEach(f => {
+        const o = c.createOscillator();
+        const g = c.createGain();
+        o.type = 'triangle';
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(0.06, now + 1.2);
+        g.gain.setValueAtTime(0.06, now + 2.5);
+        g.gain.linearRampToValueAtTime(0, now + 4);
+        o.connect(g); g.connect(ambientGain);
+        o.start(now); o.stop(now + 4.2);
+        ambientNodes.push(o);
+      });
+      if (ambientRunning) setTimeout(scheduleChord, 3800 + Math.random() * 600);
+    }
+    scheduleChord();
+  }
+
+  function stopAmbient() {
+    ambientRunning = false;
+    if (ambientGain) {
+      const c = getCtx();
+      ambientGain.gain.linearRampToValueAtTime(0, c.currentTime + 1.5);
+      setTimeout(() => {
+        ambientNodes.forEach(n => { try { n.stop(); } catch(e) {} });
+        ambientNodes = [];
+        ambientGain = null;
+      }, 1600);
+    }
+  }
+
+  // ─────────────────────────────────────────
+  // 2. SUCCESS — argumento sólido (hit)
+  //    Acorde mayor ascendente + shimmer
+  // ─────────────────────────────────────────
+  function playSuccess() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.55);
+    const now = c.currentTime;
+
+    // Rising arpeggio: C-E-G-C
+    const notes = [261.6, 329.6, 392, 523.2];
+    notes.forEach((f, i) => {
+      osc('triangle', f, now + i * 0.08, 0.35 + (notes.length - i) * 0.08, 0.3, m);
+    });
+
+    // Shimmer — high sparkle
+    [1046, 1318, 1568].forEach((f, i) => {
+      osc('sine', f, now + 0.28 + i * 0.06, 0.25, 0.12, m);
+    });
+
+    // Warm chord sustain
+    [261.6, 329.6, 392].forEach(f => {
+      osc('sine', f, now + 0.32, 0.55, 0.08, m);
+    });
+  }
+
+  // ─────────────────────────────────────────
+  // 3. MASTER — golpe maestro (spc)
+  //    Fanfarria triunfal
+  // ─────────────────────────────────────────
+  function playMaster() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.65);
+    const now = c.currentTime;
+
+    // Fanfare: G-C-E-G-C (trumpet-like with sawtooth + filter)
+    const fanfare = [392, 523.2, 659.3, 784, 1046.5];
+    const times =   [0,   0.13,  0.26,  0.38, 0.5];
+    fanfare.forEach((f, i) => {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      const flt = c.createBiquadFilter();
+      flt.type = 'lowpass';
+      flt.frequency.value = 2800;
+      o.type = 'sawtooth';
+      o.frequency.value = f;
+      const t = now + times[i];
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.35, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      o.connect(flt); flt.connect(g); g.connect(m);
+      o.start(t); o.stop(t + 0.32);
+    });
+
+    // Drum roll
+    for (let i = 0; i < 6; i++) {
+      noise(now + 0.52 + i * 0.035, 0.07, 0.18, m, 3500 + i * 200);
+    }
+
+    // Final chord burst
+    [523.2, 659.3, 784, 1046.5].forEach((f, i) => {
+      osc('triangle', f, now + 0.75, 0.6, 0.14 - i * 0.02, m);
+    });
+
+    // Bell overtones
+    [2093, 2637, 3136].forEach((f, i) => {
+      osc('sine', f, now + 0.76 + i * 0.03, 0.45, 0.08, m);
+    });
+  }
+
+  // ─────────────────────────────────────────
+  // 4. FAIL — argumento débil / incoherente
+  //    Descenso disonante + buzzer
+  // ─────────────────────────────────────────
+  function playFail() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.5);
+    const now = c.currentTime;
+
+    // Descending dissonant tones
+    const descend = [440, 380, 320, 260, 210];
+    descend.forEach((f, i) => {
+      osc('sawtooth', f, now + i * 0.1, 0.22, 0.2, m);
+      // Add tritone dissonance
+      osc('square', f * 1.414, now + i * 0.1, 0.15, 0.06, m);
+    });
+
+    // Buzzer hit
+    const buz = c.createOscillator();
+    const bg = c.createGain();
+    buz.type = 'square';
+    buz.frequency.setValueAtTime(180, now + 0.55);
+    buz.frequency.linearRampToValueAtTime(80, now + 0.9);
+    bg.gain.setValueAtTime(0.35, now + 0.55);
+    bg.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
+    buz.connect(bg); bg.connect(m);
+    buz.start(now + 0.55); buz.stop(now + 1.0);
+
+    // Low thud
+    const thud = c.createOscillator();
+    const tg = c.createGain();
+    thud.type = 'sine';
+    thud.frequency.setValueAtTime(90, now + 0.58);
+    thud.frequency.exponentialRampToValueAtTime(30, now + 0.85);
+    tg.gain.setValueAtTime(0.5, now + 0.58);
+    tg.gain.exponentialRampToValueAtTime(0.001, now + 0.88);
+    thud.connect(tg); tg.connect(m);
+    thud.start(now + 0.58); thud.stop(now + 0.9);
+  }
+
+  // ─────────────────────────────────────────
+  // 5. ATTACK — ataque lanzado
+  //    Golpe percusivo tenso
+  // ─────────────────────────────────────────
+  function playAttack() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.5);
+    const now = c.currentTime;
+    // Metallic hit
+    [420, 630, 840].forEach((f, i) => {
+      osc('square', f, now + i * 0.02, 0.18, 0.2 - i * 0.04, m);
+    });
+    noise(now, 0.12, 0.25, m, 4000);
+    // Low strike
+    osc('sine', 55, now, 0.2, 0.4, m);
+  }
+
+  // ─────────────────────────────────────────
+  // 6. TURN — your turn notification
+  //    Ascending two-note chime
+  // ─────────────────────────────────────────
+  function playYourTurn() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.45);
+    const now = c.currentTime;
+    osc('sine', 523.2, now, 0.25, 0.35, m);
+    osc('sine', 784, now + 0.14, 0.3, 0.35, m);
+    osc('sine', 1046.5, now + 0.28, 0.35, 0.3, m);
+  }
+
+  // ─────────────────────────────────────────
+  // 7. COHERENCE WARN — argumento ajeno
+  //    Warning chime
+  // ─────────────────────────────────────────
+  function playWarn() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.4);
+    const now = c.currentTime;
+    osc('triangle', 440, now, 0.15, 0.3, m);
+    osc('triangle', 415.3, now + 0.12, 0.2, 0.25, m); // tritone-ish
+    osc('sine', 329.6, now + 0.24, 0.25, 0.2, m);
+  }
+
+  // ─────────────────────────────────────────
+  // 8. LOBBY EPIC — sinfonía de apertura épica
+  //    Orquesta de guerra académica: trompetas + cuerdas + bombo
+  // ─────────────────────────────────────────
+  let lobbyNodes = [];
+  let lobbyGain = null;
+  let lobbyRunning = false;
+
+  function startLobbyEpic() {
+    if (lobbyRunning || muted) return;
+    lobbyRunning = true;
+    const c = getCtx();
+    lobbyGain = c.createGain();
+    lobbyGain.gain.value = 0;
+    lobbyGain.connect(c.destination);
+
+    // Fade in majestic
+    lobbyGain.gain.linearRampToValueAtTime(0.22, c.currentTime + 2.5);
+
+    // ── BRASS layer — heroic fanfare motif in loop ──
+    // Notes: D-F#-A-D (D major, triumphant)
+    const brassMotif = [
+      {f:146.8, t:0,    dur:0.6, g:0.28},  // D3
+      {f:220.0, t:0.7,  dur:0.6, g:0.25},  // A3
+      {f:293.7, t:1.4,  dur:0.5, g:0.27},  // D4
+      {f:369.9, t:1.9,  dur:0.5, g:0.24},  // F#4
+      {f:440.0, t:2.4,  dur:0.8, g:0.3},   // A4 — peak
+      {f:293.7, t:3.2,  dur:0.4, g:0.22},  // D4
+      {f:220.0, t:3.6,  dur:0.4, g:0.2},   // A3
+      {f:293.7, t:4.0,  dur:1.2, g:0.28},  // D4 — resolve
+    ];
+
+    function scheduleBrass() {
+      if (!lobbyRunning) return;
+      const now = c.currentTime;
+      brassMotif.forEach(n => {
+        const o = c.createOscillator();
+        const g = c.createGain();
+        const flt = c.createBiquadFilter();
+        flt.type = 'lowpass'; flt.frequency.value = 2200; flt.Q.value = 0.7;
+        o.type = 'sawtooth';
+        o.frequency.value = n.f;
+        const t = now + n.t;
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(n.g, t + 0.04);
+        g.gain.setValueAtTime(n.g, t + n.dur * 0.7);
+        g.gain.exponentialRampToValueAtTime(0.001, t + n.dur);
+        o.connect(flt); flt.connect(g); g.connect(lobbyGain);
+        o.start(t); o.stop(t + n.dur + 0.05);
+        lobbyNodes.push(o);
+      });
+      if (lobbyRunning) setTimeout(scheduleBrass, 5400 + Math.random() * 200);
+    }
+    scheduleBrass();
+
+    // ── STRINGS layer — sweeping legato underneath ──
+    const stringChords = [
+      [146.8, 220.0, 293.7],  // D maj
+      [164.8, 220.0, 329.6],  // E min
+      [185.0, 246.9, 293.7],  // F# min (tension)
+      [146.8, 220.0, 293.7],  // D maj (resolve)
+    ];
+    let sIdx = 0;
+    function scheduleStrings() {
+      if (!lobbyRunning) return;
+      const now = c.currentTime;
+      const chord = stringChords[sIdx % stringChords.length]; sIdx++;
+      chord.forEach(f => {
+        const o = c.createOscillator();
+        const g = c.createGain();
+        o.type = 'triangle';
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(0.07, now + 0.5);
+        g.gain.setValueAtTime(0.07, now + 1.8);
+        g.gain.linearRampToValueAtTime(0, now + 2.8);
+        o.connect(g); g.connect(lobbyGain);
+        o.start(now); o.stop(now + 3.0);
+        lobbyNodes.push(o);
+      });
+      if (lobbyRunning) setTimeout(scheduleStrings, 2600 + Math.random() * 200);
+    }
+    setTimeout(scheduleStrings, 600);
+
+    // ── TIMPANI / EPIC DRUMS — boom boom pattern ──
+    function scheduleDrums() {
+      if (!lobbyRunning) return;
+      const now = c.currentTime;
+      const pg = c.createGain();
+      pg.gain.value = muted ? 0 : 0.3;
+      pg.connect(c.destination);
+
+      // Hit 1 — strong
+      const k1 = c.createOscillator();
+      const g1 = c.createGain();
+      k1.type = 'sine';
+      k1.frequency.setValueAtTime(80, now);
+      k1.frequency.exponentialRampToValueAtTime(28, now + 0.35);
+      g1.gain.setValueAtTime(0.7, now);
+      g1.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      k1.connect(g1); g1.connect(pg);
+      k1.start(now); k1.stop(now + 0.42);
+
+      // Hit 2 — softer off-beat
+      const k2 = c.createOscillator();
+      const g2 = c.createGain();
+      k2.type = 'sine';
+      k2.frequency.setValueAtTime(65, now + 0.55);
+      k2.frequency.exponentialRampToValueAtTime(24, now + 0.85);
+      g2.gain.setValueAtTime(0.4, now + 0.55);
+      g2.gain.exponentialRampToValueAtTime(0.001, now + 0.88);
+      k2.connect(g2); g2.connect(pg);
+      k2.start(now + 0.55); k2.stop(now + 0.92);
+
+      // Noise snap on beat 1
+      noise(now, 0.06, 0.15, pg, 3500);
+
+      if (lobbyRunning) setTimeout(scheduleDrums, 1200 + Math.random() * 80);
+    }
+    setTimeout(scheduleDrums, 1000);
+
+    // ── SUB BASS pedal — D1 rumble ──
+    const sub = c.createOscillator();
+    const subG = c.createGain();
+    const subLfo = c.createOscillator();
+    const subLfoG = c.createGain();
+    sub.type = 'sine';
+    sub.frequency.value = 73.4; // D2
+    subLfo.frequency.value = 0.3;
+    subLfoG.gain.value = 5;
+    subLfo.connect(subLfoG); subLfoG.connect(sub.frequency);
+    subG.gain.value = 0.12;
+    sub.connect(subG); subG.connect(lobbyGain);
+    sub.start(); subLfo.start();
+    lobbyNodes.push(sub, subLfo);
+  }
+
+  function stopLobbyEpic() {
+    lobbyRunning = false;
+    if (lobbyGain) {
+      const c = getCtx();
+      lobbyGain.gain.linearRampToValueAtTime(0, c.currentTime + 1.8);
+      setTimeout(() => {
+        lobbyNodes.forEach(n => { try { n.stop(); } catch(e) {} });
+        lobbyNodes = [];
+        lobbyGain = null;
+      }, 2000);
+    }
+  }
+
+  // ─────────────────────────────────────────
+  // 9. SUSPENSE WAITING — sala de espera multijugador
+  //    Pulso lento + cuerdas tensas + silencio marcado
+  // ─────────────────────────────────────────
+  let suspenseNodes = [];
+  let suspenseGain = null;
+  let suspenseRunning = false;
+
+  function startSuspense() {
+    if (suspenseRunning || muted) return;
+    suspenseRunning = true;
+    const c = getCtx();
+    suspenseGain = c.createGain();
+    suspenseGain.gain.value = 0;
+    suspenseGain.connect(c.destination);
+    suspenseGain.gain.linearRampToValueAtTime(0.14, c.currentTime + 3);
+
+    // ── Dark drone — Am root ──
+    [110, 146.8, 220].forEach((f, i) => {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = i === 0 ? 'sine' : 'triangle';
+      o.frequency.value = f;
+      // slight wobble per voice
+      const lfo = c.createOscillator();
+      const lg = c.createGain();
+      lfo.frequency.value = 0.08 + i * 0.04;
+      lg.gain.value = 2 + i;
+      lfo.connect(lg); lg.connect(o.detune);
+      lfo.start();
+      g.gain.value = i === 0 ? 0.14 : 0.07;
+      o.connect(g); g.connect(suspenseGain);
+      o.start();
+      suspenseNodes.push(o, lfo);
+    });
+
+    // ── Tension strings — minor 2nd dissonance ──
+    function scheduleTensionStrings() {
+      if (!suspenseRunning) return;
+      const now = c.currentTime;
+      // Minor chord: A - C - E with tension E-F
+      [[220, 261.6, 329.6], [220, 246.9, 311.1], [233.1, 277.2, 349.2]].forEach((chord, ci) => {
+        chord.forEach(f => {
+          const o = c.createOscillator();
+          const g = c.createGain();
+          o.type = 'triangle';
+          o.frequency.value = f;
+          const t = now + ci * 1.8;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.04, t + 0.8);
+          g.gain.setValueAtTime(0.04, t + 1.2);
+          g.gain.linearRampToValueAtTime(0, t + 1.8);
+          o.connect(g); g.connect(suspenseGain);
+          o.start(t); o.stop(t + 2.0);
+          suspenseNodes.push(o);
+        });
+      });
+      if (suspenseRunning) setTimeout(scheduleTensionStrings, 5400 + Math.random() * 800);
+    }
+    scheduleTensionStrings();
+
+    // ── Heartbeat pulse — slow, expectant ──
+    function scheduleHeartbeat() {
+      if (!suspenseRunning) return;
+      const now = c.currentTime;
+      const pg = c.createGain();
+      pg.gain.value = muted ? 0 : 0.18;
+      pg.connect(c.destination);
+
+      // lub
+      const k = c.createOscillator();
+      const kg = c.createGain();
+      k.type = 'sine';
+      k.frequency.setValueAtTime(60, now);
+      k.frequency.exponentialRampToValueAtTime(25, now + 0.12);
+      kg.gain.setValueAtTime(0.35, now);
+      kg.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+      k.connect(kg); kg.connect(pg);
+      k.start(now); k.stop(now + 0.18);
+
+      // dub (softer)
+      const k2 = c.createOscillator();
+      const kg2 = c.createGain();
+      k2.type = 'sine';
+      k2.frequency.setValueAtTime(50, now + 0.16);
+      k2.frequency.exponentialRampToValueAtTime(20, now + 0.26);
+      kg2.gain.setValueAtTime(0.2, now + 0.16);
+      kg2.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      k2.connect(kg2); kg2.connect(pg);
+      k2.start(now + 0.16); k2.stop(now + 0.32);
+
+      // BPM 52 — slow suspense
+      if (suspenseRunning) setTimeout(scheduleHeartbeat, 1150 + Math.random() * 120);
+    }
+    setTimeout(scheduleHeartbeat, 1500);
+
+    // ── Occasional mysterious high tone ──
+    function scheduleMysterious() {
+      if (!suspenseRunning) return;
+      const now = c.currentTime;
+      const freqs = [880, 988, 1047, 932];
+      const f = freqs[Math.floor(Math.random() * freqs.length)];
+      const m2 = c.createGain(); m2.gain.value = muted ? 0 : 0.06; m2.connect(c.destination);
+      osc('sine', f, now, 1.8, 0.06, m2);
+      if (suspenseRunning) setTimeout(scheduleMysterious, 4500 + Math.random() * 3000);
+    }
+    setTimeout(scheduleMysterious, 3000);
+  }
+
+  function stopSuspense() {
+    suspenseRunning = false;
+    if (suspenseGain) {
+      const c = getCtx();
+      suspenseGain.gain.linearRampToValueAtTime(0, c.currentTime + 1.5);
+      setTimeout(() => {
+        suspenseNodes.forEach(n => { try { n.stop(); } catch(e) {} });
+        suspenseNodes = [];
+        suspenseGain = null;
+      }, 1700);
+    }
+  }
+
+  // ─────────────────────────────────────────
+  // 10. MODERATOR CLOSE — tono solemne de cierre académico
+  //     Gong + campanada + acorde final mayor con reverb simulado
+  // ─────────────────────────────────────────
+  function playModeratorClose() {
+    if (muted) return;
+    const c = getCtx();
+    const m = masterGain(0.6);
+    const now = c.currentTime;
+
+    // ── GONG strike — deep metallic resonance ──
+    const gongFreqs = [55, 110, 164.8, 220, 293.7];
+    gongFreqs.forEach((f, i) => {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      const flt = c.createBiquadFilter();
+      flt.type = 'bandpass'; flt.frequency.value = f * 2.1; flt.Q.value = 8;
+      o.type = 'sine';
+      o.frequency.value = f * (1 + i * 0.003); // slight inharmonicity = metallic
+      g.gain.setValueAtTime(0.35 - i * 0.05, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 4.5 + i * 0.8);
+      o.connect(flt); flt.connect(g); g.connect(m);
+      o.start(now); o.stop(now + 5.5);
+    });
+
+    // ── Bell overtones — clarity on top ──
+    [880, 1174.7, 1318.5, 1760].forEach((f, i) => {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.08 - i * 0.015, now + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 2.5 + i * 0.3);
+      o.connect(g); g.connect(m);
+      o.start(now + 0.02); o.stop(now + 3.0);
+    });
+
+    // ── ACADEMIC CHORD — D major solemn resolution ──
+    // Simulate reverb with delayed copies
+    [[293.7, 369.9, 440.0, 587.3], // D maj
+    ].forEach(chord => {
+      [0, 0.08, 0.18].forEach((delay, di) => { // dry + 2 reverb tails
+        chord.forEach((f, fi) => {
+          const o = c.createOscillator();
+          const g = c.createGain();
+          o.type = fi % 2 === 0 ? 'triangle' : 'sine';
+          o.frequency.value = f;
+          const vol = (0.12 - di * 0.04) - fi * 0.015;
+          g.gain.setValueAtTime(0, now + 1.2 + delay);
+          g.gain.linearRampToValueAtTime(vol, now + 1.35 + delay);
+          g.gain.setValueAtTime(vol, now + 2.5 + delay);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 5.0 + delay + fi * 0.2);
+          o.connect(g); g.connect(m);
+          o.start(now + 1.2 + delay); o.stop(now + 5.5);
+        });
+      });
+    });
+
+    // ── FINAL NOISE SWEEP — like applause fading ──
+    noise(now + 1.1, 0.08, 0.12, m, 2800);
+    noise(now + 1.2, 0.06, 0.08, m, 3200);
+
+    // ── Distant low bow ── (cello-like final note)
+    const cello = c.createOscillator();
+    const cg = c.createGain();
+    const cf = c.createBiquadFilter();
+    cf.type = 'lowpass'; cf.frequency.value = 800; cf.Q.value = 1.5;
+    cello.type = 'sawtooth';
+    cello.frequency.value = 73.4; // D2
+    cg.gain.setValueAtTime(0, now + 0.6);
+    cg.gain.linearRampToValueAtTime(0.18, now + 1.2);
+    cg.gain.setValueAtTime(0.18, now + 3.8);
+    cg.gain.exponentialRampToValueAtTime(0.001, now + 6.0);
+    cello.connect(cf); cf.connect(cg); cg.connect(m);
+    cello.start(now + 0.6); cello.stop(now + 6.2);
+  }
+
+  // ─────────────────────────────────────────
+  // PUBLIC API
+  // ─────────────────────────────────────────
+  return {
+    startAmbient, stopAmbient,
+    startLobbyEpic, stopLobbyEpic,
+    startSuspense, stopSuspense,
+    playModeratorClose,
+    playSuccess, playMaster, playFail, playAttack, playYourTurn, playWarn,
+    toggleMute() {
+      muted = !muted;
+      if (ambientGain)  ambientGain.gain.value  = muted ? 0 : 0.18;
+      if (lobbyGain)    lobbyGain.gain.value     = muted ? 0 : 0.22;
+      if (suspenseGain) suspenseGain.gain.value  = muted ? 0 : 0.14;
+      return muted;
+    }
+  };
+})();
+
+// ── Sound trigger injection ──
+// Wrap chooseArg to add sound
+// ── Sound triggers injected directly into game flow ──
+// These run after SFX is defined above
+
+function _sfxForArg(a) {
+  if (!a) return;
+  if (a.res === 'spc' && a.coh === 'own') SFX.playMaster();
+  else if (a.res === 'hit' && a.coh === 'own') SFX.playSuccess();
+  else if (a.coh === 'other') SFX.playWarn();
+  else SFX.playFail();
+}
+
+function _sfxForDef(d) {
+  if (!d) return;
+  if (d.res === 'spc') SFX.playMaster();
+  else if (d.res === 'hit') SFX.playSuccess();
+  else SFX.playFail();
+}
+
+// Patch chooseArg
+const _baseChooseArg = window.chooseArg || chooseArg;
+window.chooseArg = async function(idx) {
+  _sfxForArg(ARGS[myChar]?.[idx]);
+  await _baseChooseArg(idx);
+};
+
+// Patch chooseDefense
+const _baseChooseDef = window.chooseDefense || chooseDefense;
+window.chooseDefense = async function(idx) {
+  _sfxForDef(DEFENSES[myChar]?.[idx]);
+  await _baseChooseDef(idx);
+};
+
+// Patch sendAttack
+const _baseSendAttack = window.sendAttack || sendAttack;
+window.sendAttack = async function() {
+  SFX.playAttack();
+  await _baseSendAttack();
+};
+
+// Patch loadMyTurn
+const _baseLoadMyTurn = window.loadMyTurn || loadMyTurn;
+window.loadMyTurn = function(room) {
+  SFX.playYourTurn();
+  _baseLoadMyTurn(room);
+};
+
+// Patch showDefendScreen
+const _baseShowDefend = window.showDefendScreen || showDefendScreen;
+window.showDefendScreen = async function(room) {
+  SFX.playYourTurn();
+  await _baseShowDefend(room);
+};
+
+// Mute button (bottom right)
+(function() {
+  const btn = document.createElement('button');
+  btn.id = 'mute-btn';
+  btn.innerHTML = '🔊';
+  btn.title = 'Silenciar / activar sonido';
+  btn.style.cssText = 'position:fixed;bottom:20px;right:16px;z-index:999;background:rgba(30,30,40,.85);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.4);';
+  btn.onclick = () => { const m = SFX.toggleMute(); btn.innerHTML = m ? '🔇' : '🔊'; };
+  document.body.appendChild(btn);
+})();
+
+// Start ambient on first tap/click (browser autoplay policy requires gesture)
+let _ambientStarted = false;
+document.addEventListener('click', function startAmbientOnce() {
+  if (_ambientStarted) return;
+  _ambientStarted = true;
+  // Start lobby epic on very first interaction
+  SFX.startLobbyEpic();
+});
+
+// ── Screen transition sound routing ──
+// Patch show() to trigger sounds on screen changes
+const _baseShow = show;
+function show(id) {
+  const prev = document.querySelector('.screen.active')?.id;
+  _baseShow(id);
+
+  if (!_ambientStarted) return; // audio not unlocked yet
+
+  // Leaving lobby
+  if (prev === 's-lobby' && id !== 's-lobby') {
+    SFX.stopLobbyEpic();
+  }
+  // Returning to lobby
+  if (id === 's-lobby') {
+    SFX.stopAmbient();
+    SFX.stopSuspense();
+    setTimeout(() => SFX.startLobbyEpic(), 200);
+  }
+  // Entering waiting room
+  if (id === 's-waiting' || id === 's-waiting-turn') {
+    SFX.stopLobbyEpic();
+    SFX.stopAmbient();
+    if (!SFX._suspenseRunning) SFX.startSuspense();
+  }
+  // Leaving waiting room into game
+  if ((prev === 's-waiting' || prev === 's-waiting-turn') &&
+      (id === 's-my-turn' || id === 's-attack' || id === 's-defend')) {
+    SFX.stopSuspense();
+    SFX.startAmbient();
+  }
+  // End screen
+  if (id === 's-end') {
+    SFX.stopAmbient();
+    SFX.stopSuspense();
+  }
+}
+
+// Expose suspense state so show() can check it
+Object.defineProperty(SFX, '_suspenseRunning', {
+  get() { return typeof suspenseRunning !== 'undefined' ? suspenseRunning : false; }
+});
+
+// ── Moderator panel open/close sounds ──
+const _baseOpenMod = openMod;
+function openMod() {
+  _baseOpenMod();
+  if (_ambientStarted) SFX.playModeratorClose();
+}
+
+const _baseCloseMod = closeMod;
+function closeMod() {
+  _baseCloseMod();
+}
+</script>
+</body>
+</html>
